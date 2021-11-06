@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kusikay_mobile/colors/kusikay_colors.dart';
+import 'package:kusikay_mobile/pages/teacher/contacts_teacher.dart';
+import 'package:kusikay_mobile/pages/teacher/ranking_teacher.dart';
+import 'package:kusikay_mobile/pages/teacher/report_teacher.dart';
+import 'package:kusikay_mobile/pages/teacher/schedule_teacher.dart';
 
 class HomeTeacher extends StatefulWidget {
   const HomeTeacher({Key? key}) : super(key: key);
@@ -11,7 +15,18 @@ class HomeTeacher extends StatefulWidget {
 class _HomeTeacherState extends State<HomeTeacher> {
   static int _currentIndex = 0;
 
-  final tabs = [];
+  final tabs = [
+    ScheduleTeacher(),
+    ReportTeacher(),
+    ContactsTeacher(),
+    RankingTeacher(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
 
   @override
   void initState() {
@@ -25,8 +40,10 @@ class _HomeTeacherState extends State<HomeTeacher> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: const Center(child: Text('Hello')),
+      body: tabs[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: _onItemTapped,
         elevation: 10,
         selectedItemColor: KColors.blue,
         unselectedItemColor: Colors.black,
