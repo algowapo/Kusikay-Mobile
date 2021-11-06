@@ -25,6 +25,7 @@ class KusikayApp extends StatelessWidget {
     return MaterialApp(
       title: 'Kusikay',
       theme: ThemeData(
+        appBarTheme: const AppBarTheme(color: Colors.white),
         textTheme: TextTheme(
           headline1: TextStyle(
             fontSize: logicalWidth / 20, // 360 / 18
@@ -78,10 +79,10 @@ class KusikayApp extends StatelessWidget {
           ),
         ),
         //TODO: Implement Theme
-        primarySwatch: Colors.blue,
         fontFamily: 'Montserrat',
         iconTheme: IconThemeData(
           size: logicalWidth / 13,
+          color: Colors.black,
         ),
       ),
       debugShowCheckedModeBanner: false,

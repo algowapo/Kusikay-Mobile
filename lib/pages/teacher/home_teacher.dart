@@ -41,6 +41,40 @@ class _HomeTeacherState extends State<HomeTeacher> {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: tabs[_currentIndex],
+      appBar: AppBar(
+        elevation: 0,
+        toolbarHeight: width / 6,
+        title: SizedBox(
+          width: width / 4,
+          child: Image.asset(
+            'assets/logo-azul.png',
+          ),
+        ),
+        titleSpacing: width / 18,
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: width / 40),
+            child: IconButton(
+              icon: const Icon(
+                Icons.card_giftcard,
+                color: Colors.black,
+              ),
+              onPressed: () {},
+            ),
+          )
+        ],
+        bottom: PreferredSize(
+          preferredSize: Size(width, 2),
+          child: SizedBox(
+            width: width / 1.07,
+            child: const Divider(
+              height: 2,
+              thickness: 1,
+              color: Colors.black26,
+            ),
+          ),
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: _onItemTapped,
