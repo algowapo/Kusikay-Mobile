@@ -25,8 +25,64 @@ class KusikayApp extends StatelessWidget {
     return MaterialApp(
       title: 'Kusikay',
       theme: ThemeData(
+        textTheme: TextTheme(
+          headline1: TextStyle(
+            fontSize: logicalWidth / 20, // 360 / 18
+            fontWeight: FontWeight.w600, // Semi-bold
+            color: Colors.black,
+          ),
+          headline2: TextStyle(
+            fontSize: logicalWidth / 20, // 360 / 18
+            fontWeight: FontWeight.w500, // Medium
+            color: Colors.black,
+          ),
+          headline3: TextStyle(
+            fontSize: logicalWidth / 23, // 360 / 16
+            fontWeight: FontWeight.w500, // Medium
+            color: Colors.black,
+          ),
+          headline4: TextStyle(
+            fontSize: logicalWidth / 23, // 360 / 16
+            fontWeight: FontWeight.w600, // Semi-bold
+            color: Colors.black,
+          ),
+          subtitle1: TextStyle(
+            fontSize: logicalWidth / 23, // 360 / 16
+            fontWeight: FontWeight.w500, // Medium
+            color: Colors.black,
+          ),
+          subtitle2: TextStyle(
+            fontSize: logicalWidth / 23, // 360 / 16
+            fontWeight: FontWeight.w400, // Regular
+            color: Colors.black,
+          ),
+          bodyText1: TextStyle(
+            fontSize: logicalWidth / 26, // 360 / 14
+            fontWeight: FontWeight.w400, // Regular
+            color: Colors.black,
+          ),
+          bodyText2: TextStyle(
+            fontSize: logicalWidth / 30, // 360 / 12
+            fontWeight: FontWeight.w400, // Regular
+            color: Colors.black,
+          ),
+          caption: TextStyle(
+            fontSize: logicalWidth / 30, // 360 / 12
+            fontWeight: FontWeight.w400, // Regular
+            color: Colors.black54,
+          ),
+          overline: TextStyle(
+            fontSize: logicalWidth / 36, // 360 / 10
+            fontWeight: FontWeight.w500, // Medium
+            color: Colors.white,
+          ),
+        ),
         //TODO: Implement Theme
         primarySwatch: Colors.blue,
+        fontFamily: 'Montserrat',
+        iconTheme: IconThemeData(
+          size: logicalWidth / 13,
+        ),
       ),
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
