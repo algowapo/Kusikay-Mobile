@@ -5,8 +5,37 @@ class ScheduleTeacher extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text('Schedule')),
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Schedule',
+              style: Theme.of(context).textTheme.headline1,
+            ),
+            Text(
+              'Schedule',
+              style: Theme.of(context).textTheme.headline2,
+            ),
+            Text(
+              'Schedule',
+              style: Theme.of(context).textTheme.headline3,
+            ),
+            Text(
+              'Schedule',
+              style: Theme.of(context).textTheme.caption,
+            ),
+            Container(
+              color: Colors.black,
+              child: Text(
+                'Schedule',
+                style: Theme.of(context).textTheme.overline,
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }

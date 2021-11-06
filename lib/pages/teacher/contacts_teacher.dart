@@ -6,7 +6,7 @@ class ContactsTeacher extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(child: Text('Contacts')),
+      body: Center(child: Icon(Icons.verified_outlined)),
     );
   }
 }
