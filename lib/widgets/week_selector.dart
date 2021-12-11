@@ -25,6 +25,7 @@ class _WeekSelectorState extends State<WeekSelector> {
       fontWeight: FontWeight.w500,
     );
 
+    // TODO: Implement callback when selecting week to update week in ScheduleTeacher.
     return Container(
       width: width * 0.89,
       padding: EdgeInsets.symmetric(vertical: width * 0.05),
