@@ -18,12 +18,6 @@ class ScheduleCard extends StatelessWidget {
       this.leader = false})
       : super(key: key);
 
-  Widget spacer() {
-    return const SizedBox(
-      height: 12,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return BaseCard(
@@ -45,7 +39,7 @@ class ScheduleCard extends StatelessWidget {
               ),
             ],
           ),
-          spacer(),
+          SizedBox(height: 12),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -56,7 +50,7 @@ class ScheduleCard extends StatelessWidget {
               icon,
             ],
           ),
-          spacer(),
+          SizedBox(height: 12),
           Text(
             description,
             style: Theme.of(context).textTheme.caption,
