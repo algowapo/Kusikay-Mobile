@@ -27,15 +27,13 @@ class ScheduleTeacher extends StatelessWidget {
             const WeekSelector(
               dateStrings: ['2-8', '9-15', '16-22', '23-29', '30-5'],
             ),
-            VerticalSeparator(
-              bottomPadding: width * 0.067,
-            ),
+            const VerticalSeparator(),
             Expanded(
               child: ListView(
                 physics: const BouncingScrollPhysics(),
                 children: [
                   Padding(
-                    padding: listPadding,
+                    padding: EdgeInsets.all(width * 0.06),
                     child: const ScheduleCard(
                         date: '3 Agosto',
                         time: '09:00-10:00',
