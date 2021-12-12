@@ -42,7 +42,7 @@ class ReportCard extends StatelessWidget {
             children: [
               Container(
                 width: width * 0.2,
-                height: width * 0.04,
+                height: width * 0.045,
                 child: Center(
                   child: Container(
                     child: Text(
