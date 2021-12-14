@@ -4,6 +4,7 @@ import 'package:kusikay_mobile/pages/teacher/contacts_teacher.dart';
 import 'package:kusikay_mobile/pages/teacher/ranking_teacher.dart';
 import 'package:kusikay_mobile/pages/teacher/report_teacher.dart';
 import 'package:kusikay_mobile/pages/teacher/schedule_teacher.dart';
+import 'package:kusikay_mobile/widgets/benefits_tab.dart';
 import 'package:kusikay_mobile/widgets/kusikay_appbar.dart';
 
 class HomeTeacher extends StatefulWidget {
@@ -15,6 +16,7 @@ class HomeTeacher extends StatefulWidget {
 
 class _HomeTeacherState extends State<HomeTeacher> {
   static int _currentIndex = 0;
+  static bool _showingBenefits = false;
 
   final tabs = [
     ScheduleTeacher(),
@@ -29,6 +31,18 @@ class _HomeTeacherState extends State<HomeTeacher> {
     });
   }
 
+  void _benefitsTabTapped() {
+    setState(() {
+      _showingBenefits = !_showingBenefits;
+    });
+  }
+
+  void _benefitsTabDismissed() {
+    setState(() {
+      _showingBenefits = false;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -40,8 +54,34 @@ class _HomeTeacherState extends State<HomeTeacher> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: tabs[_currentIndex],
-      appBar: KusikayAppBar(context),
+      body: Stack(
+        alignment: AlignmentDirectional.topCenter,
+        children: [
+          tabs[_currentIndex],
+          GestureDetector(
+            onTap: _benefitsTabDismissed,
+            child: AnimatedOpacity(
+              opacity: _showingBenefits ? 1 : 0,
+              duration: const Duration(milliseconds: 200),
+              child: Flex(
+                direction: Axis.vertical,
+                children: [
+                  Expanded(
+                    child: Container(
+                      color: Colors.white.withOpacity(0.7),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          AnimatedOpacity(
+              opacity: _showingBenefits ? 1 : 0,
+              duration: const Duration(milliseconds: 200),
+              child: BenefitsTab()),
+        ],
+      ),
+      appBar: KusikayAppBar(context, onBenefitTap: _benefitsTabTapped),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: _onItemTapped,
