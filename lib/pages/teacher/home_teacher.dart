@@ -58,27 +58,10 @@ class _HomeTeacherState extends State<HomeTeacher> {
         alignment: AlignmentDirectional.topCenter,
         children: [
           tabs[_currentIndex],
-          GestureDetector(
-            onTap: _benefitsTabDismissed,
-            child: AnimatedOpacity(
-              opacity: _showingBenefits ? 1 : 0,
-              duration: const Duration(milliseconds: 200),
-              child: Flex(
-                direction: Axis.vertical,
-                children: [
-                  Expanded(
-                    child: Container(
-                      color: Colors.white.withOpacity(0.7),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          BenefitsTab(
+            showingBenefits: _showingBenefits,
+            onDismiss: _benefitsTabDismissed,
           ),
-          AnimatedOpacity(
-              opacity: _showingBenefits ? 1 : 0,
-              duration: const Duration(milliseconds: 200),
-              child: BenefitsTab()),
         ],
       ),
       appBar: KusikayAppBar(context, onBenefitTap: _benefitsTabTapped),
