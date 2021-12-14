@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kusikay_mobile/widgets/vertical_separator.dart';
 
-PreferredSizeWidget KusikayAppBar(BuildContext context) {
+PreferredSizeWidget KusikayAppBar(BuildContext context,
+    {required VoidCallback onBenefitTap}) {
   double width = MediaQuery.of(context).size.width;
   return AppBar(
     elevation: 0,
@@ -21,7 +22,7 @@ PreferredSizeWidget KusikayAppBar(BuildContext context) {
             Icons.card_giftcard,
             color: Colors.black,
           ),
-          onPressed: () {},
+          onPressed: () => onBenefitTap(),
         ),
       )
     ],
