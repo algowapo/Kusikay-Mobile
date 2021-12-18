@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:kusikay_mobile/colors/kusikay_colors.dart';
 import 'package:kusikay_mobile/pages/teacher/home_teacher.dart';
 
 void main() {
@@ -25,6 +26,11 @@ class KusikayApp extends StatelessWidget {
     return MaterialApp(
       title: 'Kusikay',
       theme: ThemeData(
+        colorScheme: ThemeData().colorScheme.copyWith(
+          secondary: KColors.blue,
+          onSecondary: KColors.blue,
+
+        ),
         appBarTheme: const AppBarTheme(color: Colors.white),
         textTheme: TextTheme(
           headline1: TextStyle(
@@ -78,7 +84,6 @@ class KusikayApp extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        //TODO: Implement Theme
         fontFamily: 'Montserrat',
         iconTheme: IconThemeData(
           size: logicalWidth / 13,
