@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 import 'package:kusikay_mobile/colors/kusikay_colors.dart';
 
 class RankingTeacher extends StatelessWidget {
