@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kusikay_mobile/colors/kusikay_colors.dart';
 import 'package:kusikay_mobile/widgets/base_card.dart';
+import 'package:kusikay_mobile/widgets/cross_button.dart';
 import 'package:kusikay_mobile/widgets/vertical_separator.dart';
 import 'package:ms_undraw/illustrations.g.dart';
 import 'package:ms_undraw/ms_undraw.dart';
@@ -113,7 +114,12 @@ class BenefitsTab extends StatelessWidget {
                                         style: const TextStyle(height: 1.7),
                                       ),
                                       flex: 12,
-                                    )
+                                    ),
+                                    Flexible(
+                                      child: Container(),
+                                      flex: 2,
+                                    ),
+                                    CrossButton(checked: false),
                                   ],
                                 ),
                               ),
