@@ -113,7 +113,7 @@ class BenefitsTab extends StatelessWidget {
                                         style: const TextStyle(height: 1.7),
                                       ),
                                       flex: 12,
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),
