@@ -11,7 +11,7 @@ class AttendanceDialog extends StatefulWidget {
 
 class _AttendanceDialogState extends State<AttendanceDialog> {
 
-  bool fieldsEnabled = true;
+  bool editable = false;
   var duration = TextEditingController();
   var textForm1 = TextEditingController();
   var textForm2 = TextEditingController();
@@ -27,7 +27,7 @@ class _AttendanceDialogState extends State<AttendanceDialog> {
 
   void toggleEditing() {
     setState(() {
-      fieldsEnabled = !fieldsEnabled;
+      editable = !editable;
     });
   }
 
@@ -65,13 +65,13 @@ class _AttendanceDialogState extends State<AttendanceDialog> {
               ),
               height: 60,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: editable? MainAxisAlignment.spaceEvenly : MainAxisAlignment.center,
                 children: [
-                  fieldsEnabled
+                  editable
                       ? InkWell(
                     onTap: () {
-                      toggleEditing();
-                      print("Se descarto");
+                      Navigator.pop(context);
+                      print("Se cancelo");
                     },
                     child: Row(
                       children: [
@@ -86,34 +86,10 @@ class _AttendanceDialogState extends State<AttendanceDialog> {
                             style: Theme.of(context).textTheme.subtitle1),
                       ],
                     ),
-                  )
-                      : InkWell(
-                    onTap: () {
-                      if (fieldsEnabled) {
-                        toggleEditing();
-                        print("no se puede editar");
-                      } else {
-                        toggleEditing();
-                        print('se puede editar');
-                      }
-                    },
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.edit,
-                          size: 20,
-                        ),
-                        SizedBox(
-                          width: 3,
-                        ),
-                        Text('Editar',
-                            style: Theme.of(context).textTheme.subtitle1),
-                      ],
-                    ),
-                  ),
-                  Container(
-                      height: 50, child: VerticalDivider(color: Colors.black38)),
-                  fieldsEnabled
+                  ) : Container(color: Colors.red,),
+                  editable ? Container(
+                      height: 50, child: VerticalDivider(color: Colors.black38)) : Container(color: Colors.black38,),
+                  editable
                       ? InkWell(
                     onTap: () {
                       Navigator.pop(context);
