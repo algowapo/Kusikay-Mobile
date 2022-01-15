@@ -16,6 +16,8 @@ class _AttendanceDialogState extends State<AttendanceDialog> {
   var textForm1 = TextEditingController();
   var textForm2 = TextEditingController();
 
+
+
   final teachers = [
     "Hector Suzuki",
     "Gino Quispe",
@@ -28,6 +30,8 @@ class _AttendanceDialogState extends State<AttendanceDialog> {
       fieldsEnabled = !fieldsEnabled;
     });
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -187,9 +191,25 @@ class AssistanceDialogHeader extends StatelessWidget {
   }
 }
 
-class TeacherTile extends StatelessWidget {
+class TeacherTile extends StatefulWidget {
+
   final String teacher;
   const TeacherTile({Key? key, required this.teacher}) : super(key: key);
+
+  @override
+  State<TeacherTile> createState() => _TeacherTileState();
+}
+
+class _TeacherTileState extends State<TeacherTile> {
+
+  bool activo = false;
+
+  void toggleActivate() {
+    setState(() {
+      activo = !activo;
+    });
+    print('hola');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -200,16 +220,14 @@ class TeacherTile extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(teacher, style: Theme.of(context).textTheme.headline2),
+          Text(widget.teacher, style: Theme.of(context).textTheme.headline2),
           Row(
             children: [
               Icon(Icons.lightbulb_outline_rounded, size: 30,),
               SizedBox(width: 10,),
               Icon(Icons.thumb_up_alt_outlined, size: 30),
               SizedBox(width: 10,),
-              CrossButton(tapped: (){
-                print('hola');
-              })
+              CrossButton(tapped: toggleActivate, active: activo,)
 
             ],
           )
