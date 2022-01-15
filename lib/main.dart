@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:kusikay_mobile/colors/kusikay_colors.dart';
+import 'package:kusikay_mobile/pages/leader/home_leader.dart';
 import 'package:kusikay_mobile/pages/teacher/home_teacher.dart';
 
 void main() {
@@ -91,9 +92,10 @@ class KusikayApp extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/',
+      initialRoute: '/leader',
       routes: {
         '/': (context) => const HomeTeacher(),
+        '/leader': (context) => const HomeLeader(),
       },
     );
   }
