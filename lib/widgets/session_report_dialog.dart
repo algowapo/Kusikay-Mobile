@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:kusikay_mobile/models/session_report.dart';
+import 'package:kusikay_mobile/widgets/boolean_selector.dart';
+import 'package:kusikay_mobile/widgets/check_button.dart';
 import 'package:kusikay_mobile/widgets/description_input.dart';
 
 class SessionReportDialog extends StatefulWidget {
   final SessionReport report;
-
   const SessionReportDialog(this.report);
 
   @override
@@ -14,9 +15,15 @@ class SessionReportDialog extends StatefulWidget {
 
 class _SessionReportDialogState extends State<SessionReportDialog> {
   bool fieldsEnabled = false;
+  bool activeAssist1 = false;
+  bool activeAssist2 = false;
+  bool activeAssist3 = false;
+  bool haveClass = true;
   var duration = TextEditingController();
   var textForm1 = TextEditingController();
   var textForm2 = TextEditingController();
+  var textFormHaveClass = TextEditingController();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -26,9 +33,33 @@ class _SessionReportDialogState extends State<SessionReportDialog> {
     textForm2.text = widget.report.comments;
   }
 
+  void toggleHaveClass() {
+    setState(() {
+      haveClass = !haveClass;
+    });
+  }
+
   void toggleEditing() {
     setState(() {
       fieldsEnabled = !fieldsEnabled;
+    });
+  }
+
+  void assist1() {
+    setState(() {
+      activeAssist1 = !activeAssist1;
+    });
+  }
+
+  void assist2() {
+    setState(() {
+      activeAssist2 = !activeAssist2;
+    });
+  }
+
+  void assist3() {
+    setState(() {
+      activeAssist3 = !activeAssist3;
     });
   }
 
@@ -57,13 +88,7 @@ class _SessionReportDialogState extends State<SessionReportDialog> {
                     fieldsEnabled
                         ? Row(
                             children: [
-                              Text("btn zuk 1",
-                                  style: Theme.of(context).textTheme.caption),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text("btn zuk 2",
-                                  style: Theme.of(context).textTheme.caption)
+                              BooleanSelector(tapped: toggleHaveClass)
                             ],
                           )
                         : Text("boton suchi",
@@ -73,118 +98,159 @@ class _SessionReportDialogState extends State<SessionReportDialog> {
                 SizedBox(
                   height: 20,
                 ),
-                Text("Asistencia",
-                    style: Theme.of(context).textTheme.headline3),
+                haveClass
+                    ? Container()
+                    : Text("Cuentanos por qué no tuvieron clases",
+                        style: Theme.of(context).textTheme.headline3),
+                haveClass
+                    ? Container()
+                    : SizedBox(
+                        height: 20,
+                      ),
+                haveClass ? Container() : desInput(context, textFormHaveClass),
+                haveClass
+                    ? Container()
+                    : SizedBox(
+                        height: 20,
+                      ),
+                haveClass
+                    ? Text("Asistencia",
+                        style: Theme.of(context).textTheme.headline3)
+                    : Container(),
                 SizedBox(
                   height: 10,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(widget.report.student1,
-                        style: Theme.of(context).textTheme.subtitle2),
-                    fieldsEnabled
-                        ? Text("btn tggl",
-                            style: Theme.of(context).textTheme.caption)
-                        : Text("boton suchi",
-                            style: Theme.of(context).textTheme.caption)
-                  ],
-                ),
+                haveClass
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(widget.report.student1,
+                              style: Theme.of(context).textTheme.subtitle2),
+                          fieldsEnabled
+                              ? CheckButton(
+                                  active: activeAssist1,
+                                  tapped: toggleHaveClass)
+                              : Text("boton suchi",
+                                  style: Theme.of(context).textTheme.caption)
+                        ],
+                      )
+                    : Container(),
                 SizedBox(
                   height: 13,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(widget.report.student2,
-                        style: Theme.of(context).textTheme.subtitle2),
-                    fieldsEnabled
-                        ? Text("btn tggl",
-                            style: Theme.of(context).textTheme.caption)
-                        : Text("boton suchi",
-                            style: Theme.of(context).textTheme.caption)
-                  ],
-                ),
+                haveClass
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(widget.report.student2,
+                              style: Theme.of(context).textTheme.subtitle2),
+                          fieldsEnabled
+                              ? CheckButton(
+                                  active: activeAssist2, tapped: assist2)
+                              : Text("boton suchi",
+                                  style: Theme.of(context).textTheme.caption)
+                        ],
+                      )
+                    : Container(),
                 SizedBox(
                   height: 13,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(widget.report.student3,
-                        style: Theme.of(context).textTheme.subtitle2),
-                    fieldsEnabled
-                        ? Text("btn tggl",
-                            style: Theme.of(context).textTheme.caption)
-                        : Text("boton suchi",
-                            style: Theme.of(context).textTheme.caption)
-                  ],
-                ),
+                haveClass
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(widget.report.student3,
+                              style: Theme.of(context).textTheme.subtitle2),
+                          fieldsEnabled
+                              ? CheckButton(
+                                  active: activeAssist3, tapped: assist3)
+                              : Text("boton suchi",
+                                  style: Theme.of(context).textTheme.caption)
+                        ],
+                      )
+                    : Container(),
                 SizedBox(
                   height: 20,
                 ),
                 fieldsEnabled
-                    ? Text("¿Cúal fue la duración? (minutos)",
-                        style: Theme.of(context).textTheme.headline3)
+                    ? haveClass
+                        ? Text("¿Cúal fue la duración? (minutos)",
+                            style: Theme.of(context).textTheme.headline3)
+                        : Container()
                     : Container(),
                 fieldsEnabled
-                    ? TextField(
-                        controller: duration,
-                        style: Theme.of(context).textTheme.caption,
-                        decoration: InputDecoration(),
-                      )
+                    ? haveClass
+                        ? TextField(
+                            controller: duration,
+                            style: Theme.of(context).textTheme.caption,
+                            decoration: InputDecoration(),
+                          )
+                        : Container()
                     : Container(),
                 fieldsEnabled
                     ? SizedBox(
                         height: 20,
                       )
                     : Container(),
-                Text("Cuéntanos que hicieron",
-                    style: Theme.of(context).textTheme.headline3),
+                haveClass
+                    ? Text("Cuéntanos que hicieron",
+                        style: Theme.of(context).textTheme.headline3)
+                    : Container(),
                 SizedBox(
                   height: 10,
                 ),
                 fieldsEnabled
-                    ? desInput(context, textForm1)
+                    ? haveClass
+                        ? desInput(context, textForm1)
+                        : Container()
                     : Text(widget.report.description,
                         style: Theme.of(context).textTheme.bodyText1),
                 SizedBox(
                   height: 20,
                 ),
-                Text("Observaciones / Comentarios Adicionales",
-                    style: Theme.of(context).textTheme.headline3),
+                haveClass
+                    ? Text("Observaciones / Comentarios Adicionales",
+                        style: Theme.of(context).textTheme.headline3)
+                    : Container(),
                 SizedBox(
                   height: 10,
                 ),
                 fieldsEnabled
-                    ? desInput(context, textForm2)
+                    ? haveClass
+                        ? desInput(context, textForm2)
+                        : Container()
                     : Text(widget.report.comments,
                         style: Theme.of(context).textTheme.bodyText1),
                 SizedBox(
                   height: 20,
                 ),
                 fieldsEnabled
-                    ? Text("Calificación de la clase",
-                        style: Theme.of(context).textTheme.headline3)
+                    ? haveClass
+                        ? Text("Calificación de la clase",
+                            style: Theme.of(context).textTheme.headline3)
+                        : Container()
                     : Container(),
                 fieldsEnabled
-                    ? Center(
-                        child: RatingBar.builder(
-                          initialRating: 3,
-                          minRating: 1,
-                          direction: Axis.horizontal,
-                          allowHalfRating: true,
-                          itemCount: 5,
-                          itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                          itemBuilder: (context, _) => Icon(
-                            Icons.star,
-                            color: Colors.amber,
-                          ),
-                          onRatingUpdate: (rating) {
-                            print(rating);
-                          },
-                        ),
-                      )
+                    ? haveClass
+                        ? Center(
+                            child: RatingBar.builder(
+                              initialRating: 3,
+                              minRating: 1,
+                              direction: Axis.horizontal,
+                              allowHalfRating: true,
+                              itemCount: 5,
+                              itemPadding:
+                                  EdgeInsets.symmetric(horizontal: 4.0),
+                              itemBuilder: (context, _) => Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                              ),
+                              onRatingUpdate: (rating) {
+                                print(rating);
+                              },
+                            ),
+                          )
+                        : Container()
                     : Container(),
                 fieldsEnabled
                     ? Container()

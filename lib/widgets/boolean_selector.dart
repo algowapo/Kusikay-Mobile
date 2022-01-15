@@ -1,9 +1,12 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:kusikay_mobile/widgets/check_button.dart';
 import 'package:kusikay_mobile/widgets/cross_button.dart';
 
 class BooleanSelector extends StatefulWidget {
-  const BooleanSelector({Key? key}) : super(key: key);
+  final VoidCallback tapped;
+  const BooleanSelector({Key? key, required this.tapped}) : super(key: key);
 
   @override
   _BooleanSelectorState createState() => _BooleanSelectorState();
@@ -19,7 +22,7 @@ class _BooleanSelectorState extends State<BooleanSelector> {
       children: [
         CheckButton(active: check, tapped: tapCheck),
         SizedBox(width: width * 0.035),
-        CrossButton(active: cross, tapped: tapCross),
+        CrossButton(active: cross, tapped: widget.tapped),
       ],
     );
   }
@@ -35,6 +38,7 @@ class _BooleanSelectorState extends State<BooleanSelector> {
     setState(() {
       check = false;
       cross = true;
+      widget.tapped;
     });
   }
 }
