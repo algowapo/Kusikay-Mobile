@@ -1,13 +1,19 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:kusikay_mobile/colors/kusikay_colors.dart';
 import 'package:kusikay_mobile/pages/leader/home_leader.dart';
 import 'package:kusikay_mobile/pages/teacher/home_teacher.dart';
+import 'package:intl/date_symbol_data_local.dart';
+
 
 void main() {
   //Ensures all the stuff is loaded TOP PRIORITY
   WidgetsFlutterBinding.ensureInitialized();
+  initializeDateFormatting('es_ES', null);
+
+  Intl.defaultLocale = 'es';
 
   runApp(const KusikayApp());
 }
@@ -22,7 +28,7 @@ class KusikayApp extends StatelessWidget {
     var logicalScreenSize = window.physicalSize / pixelRatio;
     var logicalWidth = logicalScreenSize.width;
     var logicalHeight = logicalScreenSize.height;
-    print('$logicalWidth, $logicalHeight');
+    //print('$logicalWidth, $logicalHeight');
 
     return MaterialApp(
       title: 'Kusikay',
@@ -92,7 +98,7 @@ class KusikayApp extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/leader',
+      initialRoute: '/',
       routes: {
         '/': (context) => const HomeTeacher(),
         '/leader': (context) => const HomeLeader(),
