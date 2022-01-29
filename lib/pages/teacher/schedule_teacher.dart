@@ -1,11 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:kusikay_mobile/models/teacher_schedule.dart';
+import 'package:kusikay_mobile/services/teacher_service.dart';
 import 'package:kusikay_mobile/widgets/schedule_card.dart';
 import 'package:kusikay_mobile/widgets/vertical_separator.dart';
 import 'package:kusikay_mobile/widgets/week_selector.dart';
 import 'package:kusikay_mobile/widgets/year_month_viewer.dart';
+import 'package:intl/intl.dart';
 
-class ScheduleTeacher extends StatelessWidget {
+class ScheduleTeacher extends StatefulWidget {
   const ScheduleTeacher({Key? key}) : super(key: key);
+
+  @override
+  State<ScheduleTeacher> createState() => _ScheduleTeacherState();
+}
+
+class _ScheduleTeacherState extends State<ScheduleTeacher> {
+
+  TeacherService teacherService = TeacherService();
+  List<TeacherSchedule> teacherSchedule = [];
+
+  void getData() async {
+    teacherSchedule = await teacherService.getTeacherSchedule(1);
+    setState(() {
+
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,51 +54,29 @@ class ScheduleTeacher extends StatelessWidget {
             ),
             const VerticalSeparator(),
             Expanded(
-              child: ListView(
+              child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
-                children: [
-                  Padding(
+                itemCount: teacherSchedule.length,
+                itemBuilder: (context, index) {
+                  var schedule = teacherSchedule[index];
+                  DateFormat formatHourMinute = DateFormat('hh:mm');
+                  DateFormat formatDay = DateFormat('dd MMMM');
+                  var startHour = schedule.meetingId != null ? formatHourMinute.format(schedule.meetingStartTime!) : formatHourMinute.format(schedule.classStartTime!);
+                  var finishHour = schedule.meetingId != null ? formatHourMinute.format(schedule.meetingFinishTime!) : formatHourMinute.format(schedule.classFinishTime!);
+
+                  return Padding(
                     padding: EdgeInsets.all(width * 0.06),
-                    child: const ScheduleCard(
-                        date: '3 Agosto',
-                        time: '09:00-10:00',
-                        title: 'Reunion Mensual',
-                        icon: Icon(Icons.groups_outlined),
+                    child: ScheduleCard(
+                        date: schedule.meetingId != null ? formatDay.format(schedule.meetingStartTime!) : schedule.classWeekDay!.toString(),
+                        time: '$startHour - $finishHour',
+                        title: schedule.meetingId == null ? 'Clase de ${schedule.classCourseName}' : '${schedule.meetingName}',
+                        icon: schedule.meetingId != null ?  const Icon(Icons.groups_outlined) : const Icon(Icons.school_outlined),
                         description:
-                            'Se coordinarán detalles sobre el mes. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.'),
-                  ),
-                  Padding(
-                    padding: listPadding,
-                    child: const ScheduleCard(
-                        date: '4 Agosto',
-                        time: '12:00-01:00',
-                        title: 'Clase de Artes Libres',
-                        icon: Icon(Icons.school_outlined),
-                        description:
-                            'Se coordinarán detalles sobre el mes. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.'),
-                  ),
-                  Padding(
-                    padding: listPadding,
-                    child: const ScheduleCard(
-                        date: '4 Agosto',
-                        time: '12:00-01:00',
-                        title: 'Clase de Artes Libres',
-                        icon: Icon(Icons.school_outlined),
-                        description:
-                            'Se coordinarán detalles sobre el mes. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.'),
-                  ),
-                  Padding(
-                    padding: listPadding,
-                    child: const ScheduleCard(
-                        date: '4 Agosto',
-                        time: '12:00-01:00',
-                        title: 'Clase de Artes Libres',
-                        icon: Icon(Icons.school_outlined),
-                        description:
-                            'Se coordinarán detalles sobre el mes. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.'),
-                  ),
-                ],
-              ),
+                        schedule.meetingId != null ? '${schedule.meetingDescription}' : 'Clase de la semana'),
+                  );
+                },
+              )
+
             ),
           ],
         ),
