@@ -6,9 +6,12 @@ class ReportCard extends StatelessWidget {
   final String status;
   final String date;
   final String time;
-  const ReportCard(
-      {Key? key, required this.status, required this.date, required this.time})
-      : super(key: key);
+  const ReportCard({
+    Key? key,
+    required this.status,
+    required this.date,
+    required this.time,
+  }) : super(key: key);
 
   Color colorStatus(String status) {
     String statusLw = status.toLowerCase();

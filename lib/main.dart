@@ -6,7 +6,7 @@ import 'package:kusikay_mobile/colors/kusikay_colors.dart';
 import 'package:kusikay_mobile/pages/leader/home_leader.dart';
 import 'package:kusikay_mobile/pages/teacher/home_teacher.dart';
 import 'package:intl/date_symbol_data_local.dart';
-
+import 'package:kusikay_mobile/pages/teacher/login.dart';
 
 void main() {
   //Ensures all the stuff is loaded TOP PRIORITY
@@ -34,10 +34,9 @@ class KusikayApp extends StatelessWidget {
       title: 'Kusikay',
       theme: ThemeData(
         colorScheme: ThemeData().colorScheme.copyWith(
-          secondary: KColors.blue,
-          onSecondary: KColors.blue,
-
-        ),
+              secondary: KColors.blue,
+              onSecondary: KColors.blue,
+            ),
         appBarTheme: const AppBarTheme(color: Colors.white),
         textTheme: TextTheme(
           headline1: TextStyle(
@@ -100,8 +99,9 @@ class KusikayApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/': (context) => const HomeTeacher(),
+        '/': (context) => const Login(),
         '/leader': (context) => const HomeLeader(),
+        '/home': (context) => const HomeTeacher()
       },
     );
   }
