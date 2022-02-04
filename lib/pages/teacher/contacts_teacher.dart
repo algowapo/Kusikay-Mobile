@@ -1,10 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:kusikay_mobile/models/course.dart';
+import 'package:kusikay_mobile/services/course_service.dart';
 import 'package:kusikay_mobile/widgets/vertical_separator.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 
-class ContactsTeacher extends StatelessWidget {
+class ContactsTeacher extends StatefulWidget {
   const ContactsTeacher({Key? key}) : super(key: key);
+
+  @override
+  State<ContactsTeacher> createState() => _ContactsTeacherState();
+}
+
+class _ContactsTeacherState extends State<ContactsTeacher> {
+  CourseService courseService = CourseService();
+  List<Course> courses = [];
+
+  void getData() async {
+    courses = await courseService.getCourses();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +36,7 @@ class ContactsTeacher extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SearchBarContacts(width: width),
+            SearchBarContacts(width: width, courses: courses),
             Expanded(
               child: ListView(
                 physics: const BouncingScrollPhysics(),
@@ -72,12 +93,12 @@ class ContactsTeacher extends StatelessWidget {
 }
 
 class SearchBarContacts extends StatelessWidget {
-  const SearchBarContacts({
-    Key? key,
-    required this.width,
-  }) : super(key: key);
+  const SearchBarContacts(
+      {Key? key, required this.width, required this.courses})
+      : super(key: key);
 
   final double width;
+  final List<Course> courses;
 
   @override
   Widget build(BuildContext context) {
@@ -87,48 +108,33 @@ class SearchBarContacts extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 8),
         height: 60,
         width: width,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            SizedBox(
-              height: 40,
-              width: 140,
-              child: DropdownSearch(
-                  mode: Mode.MENU,
-                  items: ["Danza", "Artes", "Musica", 'Dibujo'],
-                  popupItemDisabled: (String s) => s.startsWith('I'),
-                  onChanged: print,
-                  selectedItem: "Danza"),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Container(
-                  height: 40,
-                  decoration: const BoxDecoration(boxShadow: [
-                    BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 5,
-                        offset: Offset(3, 5))
-                  ]),
-                  child: const TextField(
-                    textAlign: TextAlign.start,
-                    textAlignVertical: TextAlignVertical.bottom,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                        prefixIcon: Icon(Icons.search),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white, width: 0)
-                        ),
-                        hintText: 'Buscar'),
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
+        child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+          Container(
+              padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 2),
+              width: 300,
+              height: 50,
+              child: DropdownSearch<Course>(
+                mode: Mode.MENU,
+                items: courses,
+                itemAsString: (c) => c!.name!,
+                onChanged: (value) {
+                  print(value);
+                },
+                selectedItem: courses[0],
+              )),
+        ]),
       ),
     );
   }
+}
+
+Widget _customDropDownExample(BuildContext context, Course? item) {
+  if (item == null) {
+    return Container();
+  }
+
+  return ListTile(
+    contentPadding: EdgeInsets.all(0),
+    title: Text(item.name!),
+  );
 }
