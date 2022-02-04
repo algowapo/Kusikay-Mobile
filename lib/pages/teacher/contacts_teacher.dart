@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kusikay_mobile/models/course.dart';
+import 'package:kusikay_mobile/models/teacher.dart';
 import 'package:kusikay_mobile/services/course_service.dart';
+import 'package:kusikay_mobile/services/teacher_service.dart';
 import 'package:kusikay_mobile/widgets/vertical_separator.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 
@@ -14,10 +16,14 @@ class ContactsTeacher extends StatefulWidget {
 
 class _ContactsTeacherState extends State<ContactsTeacher> {
   CourseService courseService = CourseService();
+  TeacherService teacherService = TeacherService();
+
   List<Course> courses = [];
+  List<Teacher> teachers = [];
 
   void getData() async {
     courses = await courseService.getCourses();
+    teachers = await teacherService.getTeachers();
     setState(() {});
   }
 
@@ -38,51 +44,23 @@ class _ContactsTeacherState extends State<ContactsTeacher> {
           children: [
             SearchBarContacts(width: width, courses: courses),
             Expanded(
-              child: ListView(
+              child: ListView.builder(
+                itemCount: teachers.length,
                 physics: const BouncingScrollPhysics(),
-                children: [
-                  Padding(
+                itemBuilder: (context, index) {
+                  return Padding(
                     padding: const EdgeInsets.all(2),
                     child: ListTile(
-                      title: const Text("Hector Suzuki"),
-                      subtitle: const Text("984234567"),
+                      title: Text(teachers[index].name!),
+                      subtitle: Text(teachers[index].phone!),
                       trailing: const FaIcon(FontAwesomeIcons.whatsapp,
                           color: Colors.black87, size: 25),
                       onTap: () {
                         //print("Dirigir a whatsapp");
                       },
                     ),
-                  ),
-                  const VerticalSeparator(),
-                  Padding(
-                    padding: const EdgeInsets.all(2),
-                    child: ListTile(
-                      title: const Text("Gino Quispe"),
-                      subtitle: const Text("9842334567"),
-                      trailing: const FaIcon(
-                        FontAwesomeIcons.whatsapp,
-                        color: Colors.black87,
-                        size: 25,
-                      ),
-                      onTap: () {
-                        //print("Dirigir a whatsapp");
-                      },
-                    ),
-                  ),
-                  const VerticalSeparator(),
-                  Padding(
-                    padding: const EdgeInsets.all(2),
-                    child: ListTile(
-                      title: const Text("Juan Hernandez"),
-                      subtitle: const Text("983235789"),
-                      trailing: const FaIcon(FontAwesomeIcons.whatsapp,
-                          color: Colors.black87, size: 25),
-                      onTap: () {
-                        //print("Dirigir a whatsapp");
-                      },
-                    ),
-                  ),
-                ],
+                  );
+                },
               ),
             )
           ],
@@ -126,15 +104,4 @@ class SearchBarContacts extends StatelessWidget {
       ),
     );
   }
-}
-
-Widget _customDropDownExample(BuildContext context, Course? item) {
-  if (item == null) {
-    return Container();
-  }
-
-  return ListTile(
-    contentPadding: EdgeInsets.all(0),
-    title: Text(item.name!),
-  );
 }
