@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kusikay_mobile/models/teacher_schedule.dart';
 import 'package:kusikay_mobile/services/teacher_service.dart';
+import 'package:kusikay_mobile/utils/util.dart';
 import 'package:kusikay_mobile/widgets/schedule_card.dart';
 import 'package:kusikay_mobile/widgets/vertical_separator.dart';
 import 'package:kusikay_mobile/widgets/week_selector.dart';
@@ -16,8 +17,11 @@ class ScheduleTeacher extends StatefulWidget {
 
 class _ScheduleTeacherState extends State<ScheduleTeacher> {
 
+
   TeacherService teacherService = TeacherService();
   List<TeacherSchedule> teacherSchedule = [];
+  DateTime today = DateTime.now();
+
 
   void getData() async {
     teacherSchedule = await teacherService.getTeacherSchedule(1);
@@ -44,9 +48,9 @@ class _ScheduleTeacherState extends State<ScheduleTeacher> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const YearMonthViewer(
-              year: '2021',
-              month: 'Agosto',
+            YearMonthViewer(
+              year: today.year.toString(),
+              month: months[today.month-1],
             ),
             const VerticalSeparator(),
             const WeekSelector(

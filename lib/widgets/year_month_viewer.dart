@@ -16,11 +16,11 @@ class YearMonthViewer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '2021',
+            year,
             style: Theme.of(context).textTheme.bodyText1,
           ),
           Text(
-            'Agosto',
+            month,
             style: Theme.of(context).textTheme.headline2,
           ),
         ],

@@ -11,7 +11,11 @@ class TeacherService{
     List<TeacherSchedule> teacherSchedule = [];
     try {
       Response response = await get(
-        Uri.parse(BASE_URL + '/teachers/$teacherId/schedule')
+        Uri.parse(BASE_URL + '/teachers/$teacherId/schedule'),
+        headers: {
+          HttpHeaders.authorizationHeader:
+              'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaW5vIn0.bCcj99sO-yCeKqTfxBEUMinv8ei5EEsSDZy-mG1tjHaE6Z4Pn9YB7bJCrUOaqp-1pV1vXIBiPcNTY7KFWh12Zw'
+        }
       );
 
       List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
