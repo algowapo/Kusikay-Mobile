@@ -21,10 +21,18 @@ class _ContactsTeacherState extends State<ContactsTeacher> {
   List<Course> courses = [];
   List<Teacher> teachers = [];
 
+
   void getData() async {
     courses = await courseService.getCourses();
     teachers = await teacherService.getTeachers();
     setState(() {});
+  }
+
+  void filterByCourseId(int courseId) async {
+    teachers = await teacherService.getTeachersByCourseId(courseId);
+    setState(() {
+
+    });
   }
 
   void sendMessage(Teacher teacher) async {
@@ -35,7 +43,6 @@ class _ContactsTeacherState extends State<ContactsTeacher> {
       // can't launch url, there is some error
       throw "No se pudo enviar el mensaje";
     }
-
   }
 
   @override
@@ -46,14 +53,44 @@ class _ContactsTeacherState extends State<ContactsTeacher> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
+    double width = MediaQuery
+        .of(context)
+        .size
+        .width;
 
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SearchBarContacts(width: width, courses: courses),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                height: 60,
+                width: width,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start, children: [
+                  Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 2, horizontal: 2),
+                      width: 300,
+                      height: 50,
+                      child: DropdownSearch<Course>(
+                        dropdownSearchDecoration: const InputDecoration(
+                          hintText: 'Curso',
+                          contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
+                        ),
+                        mode: Mode.MENU,
+                        items: courses,
+                        itemAsString: (c) => c!.name!,
+                        onChanged: (value) {
+                          filterByCourseId(value!.id!);
+                        },
+                      )),
+                ]),
+              ),
+            ),
             Expanded(
               child: ListView.builder(
                 itemCount: teachers.length,
@@ -81,38 +118,3 @@ class _ContactsTeacherState extends State<ContactsTeacher> {
   }
 }
 
-class SearchBarContacts extends StatelessWidget {
-  const SearchBarContacts(
-      {Key? key, required this.width, required this.courses})
-      : super(key: key);
-
-  final double width;
-  final List<Course> courses;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 2),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        height: 60,
-        width: width,
-        child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-          Container(
-              padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 2),
-              width: 300,
-              height: 50,
-              child: DropdownSearch<Course>(
-                mode: Mode.MENU,
-                items: courses,
-                itemAsString: (c) => c!.name!,
-                onChanged: (value) {
-                  print(value);
-                },
-                selectedItem: courses[0],
-              )),
-        ]),
-      ),
-    );
-  }
-}
