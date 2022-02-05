@@ -4,8 +4,8 @@ import 'package:kusikay_mobile/models/course.dart';
 import 'package:kusikay_mobile/models/teacher.dart';
 import 'package:kusikay_mobile/services/course_service.dart';
 import 'package:kusikay_mobile/services/teacher_service.dart';
-import 'package:kusikay_mobile/widgets/vertical_separator.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ContactsTeacher extends StatefulWidget {
   const ContactsTeacher({Key? key}) : super(key: key);
@@ -25,6 +25,17 @@ class _ContactsTeacherState extends State<ContactsTeacher> {
     courses = await courseService.getCourses();
     teachers = await teacherService.getTeachers();
     setState(() {});
+  }
+
+  void sendMessage(Teacher teacher) async {
+    String url = "https://wa.me/${teacher.phone}/?text=${Uri.parse('Hola!')}";
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      // can't launch url, there is some error
+      throw "No se pudo enviar el mensaje";
+    }
+
   }
 
   @override
@@ -56,7 +67,7 @@ class _ContactsTeacherState extends State<ContactsTeacher> {
                       trailing: const FaIcon(FontAwesomeIcons.whatsapp,
                           color: Colors.black87, size: 25),
                       onTap: () {
-                        //print("Dirigir a whatsapp");
+                        sendMessage(teachers[index]);
                       },
                     ),
                   );
