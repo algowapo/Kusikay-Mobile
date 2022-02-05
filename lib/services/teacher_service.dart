@@ -20,7 +20,6 @@ class TeacherService{
       );
 
       List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
-      //print(data);
       for (var i = 0; i < data.length; i++){
        teacherSchedule.add(TeacherSchedule.fromJson(data[i]));
       }
@@ -48,7 +47,6 @@ class TeacherService{
       );
 
       List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
-      //print(data);
       for (var i = 0; i < data.length; i++){
         teachers.add(Teacher.fromJson(data[i]));
       }
@@ -63,4 +61,35 @@ class TeacherService{
     }
   }
 
+  Future<List<Teacher>> getTeachersByCourseId(int courseId) async {
+    List<Teacher> teachers = [];
+    try {
+      Response response = await get(
+          Uri.parse(BASE_URL + '/courses/$courseId/teachers'),
+          headers: {
+            HttpHeaders.authorizationHeader:
+            'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaW5vIn0.bCcj99sO-yCeKqTfxBEUMinv8ei5EEsSDZy-mG1tjHaE6Z4Pn9YB7bJCrUOaqp-1pV1vXIBiPcNTY7KFWh12Zw'
+          }
+      );
+
+      List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
+
+      for (var i = 0; i < data.length; i++){
+        teachers.add(Teacher.fromJson(data[i]));
+      }
+
+      Map<int, Teacher> mp = {};
+      for (var item in teachers) {
+        mp[item.id!] = item;
+      }
+
+      return mp.values.toList();
+
+    }
+    catch(e){
+      print(e);
+      print('error teachers courseId');
+      return [];
+    }
+  }
 }
