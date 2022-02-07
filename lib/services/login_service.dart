@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:kusikay_mobile/models/token_user_data.dart';
 import 'package:http/http.dart' as http;
 
@@ -23,7 +22,7 @@ class LoginService {
       print('el token es: ${tokenUserData.token}');
       // * Get user data by username using token authentication
       http.Response userResponse = await http.get(
-          Uri.parse('http://10.0.2.2:8080/api/usersUsername/$username'),
+          Uri.parse('http://10.0.2.2:8080/api/username/$username'),
           headers: {
             HttpHeaders.authorizationHeader: tokenUserData.token.toString()
           });

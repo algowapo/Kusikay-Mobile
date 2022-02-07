@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:kusikay_mobile/widgets/check_button.dart';
 import 'package:kusikay_mobile/widgets/cross_button.dart';
