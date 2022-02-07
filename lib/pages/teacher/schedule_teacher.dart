@@ -16,18 +16,13 @@ class ScheduleTeacher extends StatefulWidget {
 }
 
 class _ScheduleTeacherState extends State<ScheduleTeacher> {
-
-
   TeacherService teacherService = TeacherService();
   List<TeacherSchedule> teacherSchedule = [];
   DateTime today = DateTime.now();
 
-
   void getData() async {
-    teacherSchedule = await teacherService.getTeacherSchedule(1);
-    setState(() {
-
-    });
+    teacherSchedule = await teacherService.getTeacherSchedule();
+    setState(() {});
   }
 
   @override
@@ -50,7 +45,7 @@ class _ScheduleTeacherState extends State<ScheduleTeacher> {
           children: [
             YearMonthViewer(
               year: today.year.toString(),
-              month: months[today.month-1],
+              month: months[today.month - 1],
             ),
             const VerticalSeparator(),
             const WeekSelector(
@@ -58,30 +53,39 @@ class _ScheduleTeacherState extends State<ScheduleTeacher> {
             ),
             const VerticalSeparator(),
             Expanded(
-              child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemCount: teacherSchedule.length,
-                itemBuilder: (context, index) {
-                  var schedule = teacherSchedule[index];
-                  DateFormat formatHourMinute = DateFormat('hh:mm');
-                  DateFormat formatDay = DateFormat('dd MMMM');
-                  var startHour = schedule.meetingId != null ? formatHourMinute.format(schedule.meetingStartTime!) : formatHourMinute.format(schedule.classStartTime!);
-                  var finishHour = schedule.meetingId != null ? formatHourMinute.format(schedule.meetingFinishTime!) : formatHourMinute.format(schedule.classFinishTime!);
+                child: ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              itemCount: teacherSchedule.length,
+              itemBuilder: (context, index) {
+                var schedule = teacherSchedule[index];
+                DateFormat formatHourMinute = DateFormat('hh:mm');
+                DateFormat formatDay = DateFormat('dd MMMM');
+                var startHour = schedule.meetingId != null
+                    ? formatHourMinute.format(schedule.meetingStartTime!)
+                    : formatHourMinute.format(schedule.classStartTime!);
+                var finishHour = schedule.meetingId != null
+                    ? formatHourMinute.format(schedule.meetingFinishTime!)
+                    : formatHourMinute.format(schedule.classFinishTime!);
 
-                  return Padding(
-                    padding: EdgeInsets.all(width * 0.06),
-                    child: ScheduleCard(
-                        date: schedule.meetingId != null ? formatDay.format(schedule.meetingStartTime!) : schedule.classWeekDay!.toString(),
-                        time: '$startHour - $finishHour',
-                        title: schedule.meetingId == null ? 'Clase de ${schedule.classCourseName}' : '${schedule.meetingName}',
-                        icon: schedule.meetingId != null ?  const Icon(Icons.groups_outlined) : const Icon(Icons.school_outlined),
-                        description:
-                        schedule.meetingId != null ? '${schedule.meetingDescription}' : 'Clase de la semana'),
-                  );
-                },
-              )
-
-            ),
+                return Padding(
+                  padding: EdgeInsets.all(width * 0.06),
+                  child: ScheduleCard(
+                      date: schedule.meetingId != null
+                          ? formatDay.format(schedule.meetingStartTime!)
+                          : schedule.classWeekDay!.toString(),
+                      time: '$startHour - $finishHour',
+                      title: schedule.meetingId == null
+                          ? 'Clase de ${schedule.classCourseName}'
+                          : '${schedule.meetingName}',
+                      icon: schedule.meetingId != null
+                          ? const Icon(Icons.groups_outlined)
+                          : const Icon(Icons.school_outlined),
+                      description: schedule.meetingId != null
+                          ? '${schedule.meetingDescription}'
+                          : 'Clase de la semana'),
+                );
+              },
+            )),
           ],
         ),
       ),

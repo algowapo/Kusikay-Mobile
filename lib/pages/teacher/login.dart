@@ -13,7 +13,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  LoginService loginService = new LoginService();
+  LoginService loginService = LoginService();
   TextEditingController username = TextEditingController();
   TextEditingController password = TextEditingController();
   String token = '';
@@ -66,12 +66,14 @@ class _LoginState extends State<Login> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              CustomPaint(
-                size: Size(
-                    width,
-                    (width * 0.6055555555555555)
-                        .toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
-                painter: RPSCustomPainter(),
+              Expanded(
+                child: CustomPaint(
+                  size: Size(
+                      width,
+                      (width * 0.6055555555555555)
+                          .toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
+                  painter: RPSCustomPainter(),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 15),
@@ -79,8 +81,8 @@ class _LoginState extends State<Login> {
                     width: width * 0.6,
                     child: Image(image: AssetImage('assets/logo-azul.png'))),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 15),
+              const Padding(
+                padding: EdgeInsets.only(left: 15),
                 child: Text("Bienvenido de vuelta!",
                     style: TextStyle(
                       fontSize: 24, // 360 / 18

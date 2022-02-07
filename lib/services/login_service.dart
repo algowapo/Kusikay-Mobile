@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:kusikay_mobile/models/token_user_data.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 var urlLogin = Uri.parse('http://10.0.2.2:8080/login');
 
@@ -33,6 +34,13 @@ class LoginService {
       tokenUserData.role = userdata['role'];
       tokenUserData.enabled = userdata['enabled'];
     }
+
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setString('token', tokenUserData.token);
+    await prefs.setInt('userId', tokenUserData.id);
+    await prefs.setString('role', tokenUserData.role);
+
     return tokenUserData;
   }
 }
