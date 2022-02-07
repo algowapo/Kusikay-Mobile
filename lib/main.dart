@@ -97,7 +97,7 @@ class KusikayApp extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/home',
+      initialRoute: '/',
       routes: {
         '/': (context) => const Login(),
         '/leader': (context) => const HomeLeader(),

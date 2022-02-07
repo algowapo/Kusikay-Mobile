@@ -4,57 +4,52 @@ import 'package:kusikay_mobile/models/teacher.dart';
 import 'dart:convert';
 
 import 'package:kusikay_mobile/models/teacher_schedule.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class TeacherService{
+class TeacherService {
   static const BASE_URL = 'http://10.0.2.2:8080/api';
 
-  Future<List<TeacherSchedule>> getTeacherSchedule(teacherId) async {
+  Future<List<TeacherSchedule>> getTeacherSchedule() async {
     List<TeacherSchedule> teacherSchedule = [];
+    final prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+    //suponiendo que useris es el mismo de teacher
+    final int? teacherId = prefs.getInt('userId');
+
     try {
       Response response = await get(
-        Uri.parse(BASE_URL + '/teachers/$teacherId/schedule'),
-        headers: {
-          HttpHeaders.authorizationHeader:
-              'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaW5vIn0.bCcj99sO-yCeKqTfxBEUMinv8ei5EEsSDZy-mG1tjHaE6Z4Pn9YB7bJCrUOaqp-1pV1vXIBiPcNTY7KFWh12Zw'
-        }
-      );
+          Uri.parse(BASE_URL + '/teachers/$teacherId/schedule'),
+          headers: {HttpHeaders.authorizationHeader: token!});
 
       List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
-      for (var i = 0; i < data.length; i++){
-       teacherSchedule.add(TeacherSchedule.fromJson(data[i]));
+      for (var i = 0; i < data.length; i++) {
+        teacherSchedule.add(TeacherSchedule.fromJson(data[i]));
       }
 
       return teacherSchedule;
-
-
-    }
-    catch(e){
+    } catch (e) {
       print(e);
-      print('error');
+      print('error_schedule');
       return [];
     }
   }
 
   Future<List<Teacher>> getTeachers() async {
     List<Teacher> teachers = [];
+    final prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+
     try {
-      Response response = await get(
-          Uri.parse(BASE_URL + '/teachers'),
-          headers: {
-            HttpHeaders.authorizationHeader:
-            'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaW5vIn0.bCcj99sO-yCeKqTfxBEUMinv8ei5EEsSDZy-mG1tjHaE6Z4Pn9YB7bJCrUOaqp-1pV1vXIBiPcNTY7KFWh12Zw'
-          }
-      );
+      Response response = await get(Uri.parse(BASE_URL + '/teachers'),
+          headers: {HttpHeaders.authorizationHeader: token!});
 
       List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
-      for (var i = 0; i < data.length; i++){
+      for (var i = 0; i < data.length; i++) {
         teachers.add(Teacher.fromJson(data[i]));
       }
 
       return teachers;
-
-    }
-    catch(e){
+    } catch (e) {
       print(e);
       print('error teachers');
       return [];
@@ -63,18 +58,17 @@ class TeacherService{
 
   Future<List<Teacher>> getTeachersByCourseId(int courseId) async {
     List<Teacher> teachers = [];
+    final prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+
     try {
       Response response = await get(
           Uri.parse(BASE_URL + '/courses/$courseId/teachers'),
-          headers: {
-            HttpHeaders.authorizationHeader:
-            'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaW5vIn0.bCcj99sO-yCeKqTfxBEUMinv8ei5EEsSDZy-mG1tjHaE6Z4Pn9YB7bJCrUOaqp-1pV1vXIBiPcNTY7KFWh12Zw'
-          }
-      );
+          headers: {HttpHeaders.authorizationHeader: token!});
 
       List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
 
-      for (var i = 0; i < data.length; i++){
+      for (var i = 0; i < data.length; i++) {
         teachers.add(Teacher.fromJson(data[i]));
       }
 
@@ -84,9 +78,7 @@ class TeacherService{
       }
 
       return mp.values.toList();
-
-    }
-    catch(e){
+    } catch (e) {
       print(e);
       print('error teachers courseId');
       return [];
