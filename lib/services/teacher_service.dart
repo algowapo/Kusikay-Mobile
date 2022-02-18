@@ -84,4 +84,29 @@ class TeacherService {
       return [];
     }
   }
+
+  Future<List<Teacher>> getTeachersByLeaderId(int leaderId) async {
+    List<Teacher> teachers = [];
+    const String token =
+        'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaW5vIn0.bCcj99sO-yCeKqTfxBEUMinv8ei5EEsSDZy-mG1tjHaE6Z4Pn9YB7bJCrUOaqp-1pV1vXIBiPcNTY7KFWh12Zw';
+
+    try {
+      Response response = await get(Uri.parse(BASE_URL + '/leaders/$leaderId'),
+          headers: {HttpHeaders.authorizationHeader: token});
+
+      Map<String, dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
+      List<dynamic> content = data["content"];
+
+      for (var i = 0; i < content.length; i++) {
+        print(content[i]);
+        teachers.add(Teacher.fromJson(content[i]));
+      }
+
+      return teachers;
+    } catch (e) {
+      print(e);
+      print('Error get teachers by Id');
+      return [];
+    }
+  }
 }
