@@ -45,10 +45,22 @@ class _LoginState extends State<Login> {
     print(usernameData);
     print(token);
     if (token != '') {
-      Navigator.of(context).pushNamedAndRemoveUntil(
-          '/home', (Route<dynamic> route) => false,
-          arguments: {'id': id, 'token': token, 'usernameData': usernameData});
-      print("Inicio Sesión Exitoso");
+      if (roleData == 'teacher') {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            '/home', (Route<dynamic> route) => false, arguments: {
+          'id': id,
+          'token': token,
+          'usernameData': usernameData
+        });
+      } else {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            '/leader', (Route<dynamic> route) => false, arguments: {
+          'id': id,
+          'token': token,
+          'usernameData': usernameData
+        });
+      }
+      //print("Inicio Sesión Exitoso");
     } else {
       print("NO SE PUDO INICIAR SESIÓN");
     }
