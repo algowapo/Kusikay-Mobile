@@ -9,6 +9,7 @@ var urlLogin = Uri.parse('http://10.0.2.2:8080/login');
 class LoginService {
   Future<TokenUserData> login(username, password) async {
     final tokenUserData = TokenUserData(0, '', '', '', '', false);
+    int teacherId = 0;
     // * Validation login
     http.Response token = await http.post(
       urlLogin,
@@ -20,7 +21,7 @@ class LoginService {
     if (token.statusCode == 200) {
       Map<String, String> headers = token.headers;
       tokenUserData.token = headers['authorization'].toString();
-      print('el token es: ${tokenUserData.token}');
+      //print('el token es: ${tokenUserData.token}');
       // * Get user data by username using token authentication
       http.Response userResponse = await http.get(
           Uri.parse('http://10.0.2.2:8080/api/username/$username'),
@@ -33,6 +34,15 @@ class LoginService {
       tokenUserData.password = userdata['password'];
       tokenUserData.role = userdata['role'];
       tokenUserData.enabled = userdata['enabled'];
+
+      http.Response teacherResponse = await http.get(
+          Uri.parse(
+              'http://10.0.2.2:8080/api/users/${tokenUserData.id}/teachers'),
+          headers: {
+            HttpHeaders.authorizationHeader: tokenUserData.token.toString()
+          });
+      Map teacherData = jsonDecode(teacherResponse.body);
+      teacherId = teacherData['id'];
     }
 
     final prefs = await SharedPreferences.getInstance();
@@ -40,6 +50,7 @@ class LoginService {
     await prefs.setString('token', tokenUserData.token);
     await prefs.setInt('userId', tokenUserData.id);
     await prefs.setString('role', tokenUserData.role);
+    await prefs.setInt('teacherId', teacherId);
 
     return tokenUserData;
   }

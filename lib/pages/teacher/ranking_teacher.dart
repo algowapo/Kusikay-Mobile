@@ -3,6 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:kusikay_mobile/colors/kusikay_colors.dart';
 import 'package:kusikay_mobile/models/teacher_ranking.dart';
 import 'package:kusikay_mobile/services/ranking_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RankingTeacher extends StatefulWidget {
   const RankingTeacher({Key? key}) : super(key: key);
@@ -17,7 +18,9 @@ class _RankingTeacherState extends State<RankingTeacher> {
   List<TeacherRanking> top3 = [];
   List<TeacherRanking> leaderboard = [];
   bool loading = true;
-  int myId = 0;
+  int? myId = 0;
+  String? token;
+  int? teacherId = 0;
 
   List<TeacherRanking> leaderboardTest = [];
 
@@ -37,15 +40,23 @@ class _RankingTeacherState extends State<RankingTeacher> {
     setState(() {
       leaderboard = rankingService.leaderboard;
       myRanking = rankingService.myRankingModel;
-      myId = myRanking.id;
     });
     sort();
   }
 
   void getRanking() async {
-    await rankingService.getLeaderboard(6,
-        'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaW5vIn0.bCcj99sO-yCeKqTfxBEUMinv8ei5EEsSDZy-mG1tjHaE6Z4Pn9YB7bJCrUOaqp-1pV1vXIBiPcNTY7KFWh12Zw');
+    await getData();
+    await rankingService.getLeaderboard(myId, token);
     assignData();
+  }
+
+  Future<void> getData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    token = prefs.getString('token');
+    myId = prefs.getInt('userId');
+    teacherId = prefs.getInt('teacherId');
+    print("EL TEACHER ID ES:");
+    print(teacherId);
   }
 
   @override
@@ -116,7 +127,8 @@ class _RankingTeacherState extends State<RankingTeacher> {
                                   Padding(
                                     padding: const EdgeInsets.fromLTRB(
                                         0, 5.0, 0, 5.0),
-                                    child: Text(top3[1].name,
+                                    child: Text(
+                                        '${top3[1].name.split(" ")[0]} ${top3[1].name.split(" ")[1]}',
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 13)),
@@ -152,7 +164,8 @@ class _RankingTeacherState extends State<RankingTeacher> {
                                   Padding(
                                     padding: const EdgeInsets.fromLTRB(
                                         0, 5.0, 0, 5.0),
-                                    child: Text(top3[0].name,
+                                    child: Text(
+                                        '${top3[0].name.split(" ")[0]} ${top3[0].name.split(" ")[1]}',
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 12)),
@@ -188,7 +201,8 @@ class _RankingTeacherState extends State<RankingTeacher> {
                                   Padding(
                                     padding: const EdgeInsets.fromLTRB(
                                         0, 5.0, 0, 5.0),
-                                    child: Text(top3[2].name,
+                                    child: Text(
+                                        '${top3[2].name.split(" ")[0]} ${top3[2].name.split(" ")[1]}',
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 13)),
@@ -226,7 +240,7 @@ class _RankingTeacherState extends State<RankingTeacher> {
                                             flex: 2,
                                             child: Center(
                                                 child: Text(
-                                              leaderboard[index].name,
+                                              '${leaderboard[index].name.split(" ")[0]} ${leaderboard[index].name.split(" ")[1]}',
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold),
                                             ))),
