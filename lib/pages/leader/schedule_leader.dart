@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:kusikay_mobile/models/teacher_schedule.dart';
 import 'package:kusikay_mobile/services/teacher_service.dart';
 import 'package:kusikay_mobile/utils/util.dart';
-import 'package:kusikay_mobile/widgets/attendance_dialog.dart';
 import 'package:kusikay_mobile/widgets/schedule_card.dart';
 import 'package:kusikay_mobile/widgets/vertical_separator.dart';
-import 'package:kusikay_mobile/widgets/week_selector.dart';
 import 'package:kusikay_mobile/widgets/year_month_viewer.dart';
 
 class ScheduleLeader extends StatefulWidget {
@@ -66,22 +63,35 @@ class _ScheduleLeaderState extends State<ScheduleLeader> {
                       : formatHourMinute.format(schedule.classFinishTime!);
 
                   return Padding(
-                    padding: EdgeInsets.all(width * 0.06),
-                    child: ScheduleCard(
-                        date: schedule.meetingId != null
-                            ? formatDay.format(schedule.meetingStartTime!)
-                            : schedule.classWeekDay!.toString(),
-                        time: '$startHour - $finishHour',
-                        title: schedule.meetingId == null
-                            ? 'Clase de ${schedule.classCourseName}'
-                            : '${schedule.meetingName}',
-                        icon: schedule.meetingId != null
-                            ? const Icon(Icons.groups_outlined)
-                            : const Icon(Icons.school_outlined),
-                        description: schedule.meetingId != null
-                            ? '${schedule.meetingDescription}'
-                            : 'Clase de la semana'),
-                  );
+                      padding: EdgeInsets.all(width * 0.06),
+                      child: InkWell(
+                        onTap: () {
+                          if (schedule.meetingId != null &&
+                              schedule.finished == false) {
+                            print('NO TERMINADO');
+                          } else if (schedule.meetingId != null &&
+                              schedule.finished == true) {
+                            print('TERMINADO');
+                          }
+                          print(schedule.finished);
+                        },
+                        child: ScheduleCard(
+                            date: schedule.meetingId != null
+                                ? formatDay.format(schedule.meetingStartTime!)
+                                : schedule.classWeekDay!.toString(),
+                            time: '$startHour - $finishHour',
+                            title: schedule.meetingId == null
+                                ? 'Clase de ${schedule.classCourseName}'
+                                : (schedule.finished == true)
+                                    ? '${schedule.meetingName} (FINALIZADO)'
+                                    : '${schedule.meetingName}',
+                            icon: schedule.meetingId != null
+                                ? const Icon(Icons.groups_outlined)
+                                : const Icon(Icons.school_outlined),
+                            description: schedule.meetingId != null
+                                ? '${schedule.meetingDescription}'
+                                : 'Clase de la semana'),
+                      ));
                 },
               ),
             ),

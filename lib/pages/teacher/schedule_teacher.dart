@@ -63,23 +63,31 @@ class _ScheduleTeacherState extends State<ScheduleTeacher> {
                       ? formatHourMinute.format(schedule.meetingFinishTime!)
                       : formatHourMinute.format(schedule.classFinishTime!);
 
-                  return Padding(
-                    padding: EdgeInsets.all(width * 0.06),
-                    child: ScheduleCard(
-                        date: schedule.meetingId != null
-                            ? formatDay.format(schedule.meetingStartTime!)
-                            : schedule.classWeekDay!.toString(),
-                        time: '$startHour - $finishHour',
-                        title: schedule.meetingId == null
-                            ? 'Clase de ${schedule.classCourseName}'
-                            : '${schedule.meetingName}',
-                        icon: schedule.meetingId != null
-                            ? const Icon(Icons.groups_outlined)
-                            : const Icon(Icons.school_outlined),
-                        description: schedule.meetingId != null
-                            ? '${schedule.meetingDescription}'
-                            : 'Clase de la semana'),
-                  );
+                  if (schedule.finished == false) {
+                    return Padding(
+                      padding: EdgeInsets.all(width * 0.06),
+                      child: ScheduleCard(
+                          date: schedule.meetingId != null
+                              ? formatDay.format(schedule.meetingStartTime!)
+                              : schedule.classWeekDay!.toString(),
+                          time: '$startHour - $finishHour',
+                          title: schedule.meetingId == null
+                              ? 'Clase de ${schedule.classCourseName}'
+                              : '${schedule.meetingName}',
+                          icon: schedule.meetingId != null
+                              ? const Icon(Icons.groups_outlined)
+                              : const Icon(Icons.school_outlined),
+                          description: schedule.meetingId != null
+                              ? '${schedule.meetingDescription}'
+                              : 'Clase de la semana'),
+                    );
+                  } else {
+                    //reunion terminada
+                    return const SizedBox(
+                      height: 0,
+                      width: 0,
+                    );
+                  }
                 },
               ),
             ),

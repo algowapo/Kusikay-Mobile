@@ -44,9 +44,14 @@ class ScheduleCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                title,
-                style: Theme.of(context).textTheme.headline1,
+              Container(
+                width: MediaQuery.of(context).size.width - 200,
+                padding: EdgeInsets.only(right: 12),
+                child: Text(
+                  title,
+                  overflow: TextOverflow.clip,
+                  style: Theme.of(context).textTheme.headline1,
+                ),
               ),
               icon,
             ],
