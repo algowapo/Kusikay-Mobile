@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:kusikay_mobile/models/session_report.dart';
-import 'package:kusikay_mobile/widgets/cross_button.dart';
+import 'package:kusikay_mobile/services/meeting_service.dart';
 
 class CreateMeetingDialog extends StatefulWidget {
   CreateMeetingDialog({Key? key}) : super(key: key);
@@ -16,6 +15,27 @@ class _CreateMeetingDialogState extends State<CreateMeetingDialog> {
   DateTime? _dateTime;
   DateFormat formatDate = DateFormat('dd/MM/yyyy');
   TimeOfDay? _time;
+
+  MeetingService meetingService = MeetingService();
+
+  void createMeeting() async {
+    bool response = await meetingService.createMeeting(
+        meetingName.text, meetingDescription.text, _dateTime!, _time!);
+
+    if (response) {
+      const snackBar = SnackBar(
+        content: Text('Reunion creada correctamente'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      Navigator.of(context).pop();
+    } else {
+      const snackBar = SnackBar(
+        content: Text('Error'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -164,7 +184,7 @@ class _CreateMeetingDialogState extends State<CreateMeetingDialog> {
                 children: [
                   InkWell(
                     onTap: () {
-                      print("llamar a servicio");
+                      createMeeting();
                     },
                     child: Row(
                       children: [
