@@ -14,7 +14,7 @@ class TeacherService {
     final prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString('token');
     //suponiendo que useris es el mismo de teacher
-    final int? teacherId = prefs.getInt('userId');
+    final int? teacherId = prefs.getInt('teacherId');
 
     try {
       Response response = await get(
