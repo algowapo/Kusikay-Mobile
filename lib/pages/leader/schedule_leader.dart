@@ -14,7 +14,7 @@ class ScheduleLeader extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
 
     EdgeInsets listPadding =
-    EdgeInsets.fromLTRB(width * 0.06, 0, width * 0.06, width * 0.03);
+        EdgeInsets.fromLTRB(width * 0.06, 0, width * 0.06, width * 0.03);
 
     return Scaffold(
       body: Center(
@@ -24,10 +24,6 @@ class ScheduleLeader extends StatelessWidget {
             const YearMonthViewer(
               year: '2021',
               month: 'Agosto',
-            ),
-            const VerticalSeparator(),
-            const WeekSelector(
-              dateStrings: ['2-8', '9-15', '16-22', '23-29', '30-5'],
             ),
             const VerticalSeparator(),
             Expanded(
@@ -43,10 +39,10 @@ class ScheduleLeader extends StatelessWidget {
                           title: 'Reunion Mensual',
                           icon: Icon(Icons.groups_outlined),
                           description:
-                          'Se coordinarán detalles sobre el mes. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.'),
+                              'Se coordinarán detalles sobre el mes. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.'),
                       onTap: () => showAnimatedDialog(
-                          context: context,
-                        builder: (BuildContext context){
+                        context: context,
+                        builder: (BuildContext context) {
                           return AttendanceDialog();
                         },
                         animationType: DialogTransitionType.slideFromBottom,
@@ -64,7 +60,7 @@ class ScheduleLeader extends StatelessWidget {
                         title: 'Clase de Artes Libres',
                         icon: Icon(Icons.school_outlined),
                         description:
-                        'Se coordinarán detalles sobre el mes. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.'),
+                            'Se coordinarán detalles sobre el mes. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.'),
                   ),
                   Padding(
                     padding: listPadding,
@@ -74,7 +70,7 @@ class ScheduleLeader extends StatelessWidget {
                         title: 'Clase de Artes Libres',
                         icon: Icon(Icons.school_outlined),
                         description:
-                        'Se coordinarán detalles sobre el mes. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.'),
+                            'Se coordinarán detalles sobre el mes. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.'),
                   ),
                   Padding(
                     padding: listPadding,
@@ -84,7 +80,7 @@ class ScheduleLeader extends StatelessWidget {
                         title: 'Clase de Artes Libres',
                         icon: Icon(Icons.school_outlined),
                         description:
-                        'Se coordinarán detalles sobre el mes. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.'),
+                            'Se coordinarán detalles sobre el mes. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.'),
                   ),
                 ],
               ),
