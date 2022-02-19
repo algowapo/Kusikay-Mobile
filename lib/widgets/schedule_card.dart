@@ -22,6 +22,7 @@ class ScheduleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseCard(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
