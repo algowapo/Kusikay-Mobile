@@ -31,6 +31,10 @@ class KusikayApp extends StatelessWidget {
     //print('$logicalWidth, $logicalHeight');
 
     return MaterialApp(
+      builder: (context, child) => MediaQuery(
+        data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+        child: child!,
+      ),
       title: 'Kusikay',
       theme: ThemeData(
         colorScheme: ThemeData().colorScheme.copyWith(
@@ -97,7 +101,7 @@ class KusikayApp extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/',
+      initialRoute: '/leader',
       routes: {
         '/': (context) => const Login(),
         '/leader': (context) => const HomeLeader(),
