@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:kusikay_mobile/models/teacher_schedule.dart';
 import 'package:kusikay_mobile/services/teacher_service.dart';
 import 'package:kusikay_mobile/utils/util.dart';
+import 'package:kusikay_mobile/widgets/attendance_dialog.dart';
 import 'package:kusikay_mobile/widgets/schedule_card.dart';
 import 'package:kusikay_mobile/widgets/vertical_separator.dart';
 import 'package:kusikay_mobile/widgets/year_month_viewer.dart';
@@ -68,12 +70,37 @@ class _ScheduleLeaderState extends State<ScheduleLeader> {
                         onTap: () {
                           if (schedule.meetingId != null &&
                               schedule.finished == false) {
-                            print('NO TERMINADO');
+                            showAnimatedDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AttendanceDialog(
+                                  meeting: schedule,
+                                  editable: true,
+                                );
+                              },
+                              animationType:
+                                  DialogTransitionType.slideFromBottom,
+                              curve: Curves.fastOutSlowIn,
+                              duration: const Duration(milliseconds: 500),
+                              barrierDismissible: true,
+                            );
                           } else if (schedule.meetingId != null &&
                               schedule.finished == true) {
-                            print('TERMINADO');
+                            showAnimatedDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AttendanceDialog(
+                                  meeting: schedule,
+                                  editable: false,
+                                );
+                              },
+                              animationType:
+                                  DialogTransitionType.slideFromBottom,
+                              curve: Curves.fastOutSlowIn,
+                              duration: const Duration(milliseconds: 500),
+                              barrierDismissible: true,
+                            );
                           }
-                          print(schedule.finished);
                         },
                         child: ScheduleCard(
                             date: schedule.meetingId != null
