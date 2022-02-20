@@ -11,6 +11,7 @@ class SessionReport {
   late String student3;
   late String whyNotClass;
   late int teacherId;
+  late String status;
 
   SessionReport(
       this.id,
@@ -24,5 +25,6 @@ class SessionReport {
       this.student2,
       this.student3,
       this.whyNotClass,
-      this.teacherId);
+      this.teacherId,
+      this.status);
 }
