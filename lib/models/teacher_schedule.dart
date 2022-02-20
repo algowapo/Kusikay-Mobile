@@ -15,6 +15,7 @@ class TeacherSchedule {
   String? meetingDescription;
   DateTime? meetingStartTime;
   DateTime? meetingFinishTime;
+  bool? finished;
 
   TeacherSchedule(
       {this.classId,
@@ -26,20 +27,29 @@ class TeacherSchedule {
       this.meetingName,
       this.meetingDescription,
       this.meetingStartTime,
-      this.meetingFinishTime});
+      this.meetingFinishTime,
+      this.finished});
 
   factory TeacherSchedule.fromJson(Map<dynamic, dynamic> json) {
     return TeacherSchedule(
-      classId: json['classId'],
-      meetingId: json['meetingId'],
-      classWeekDay: json['classWeekDay'],
-      classFinishTime: json['classFinishTime'] != null ? stringToDatetime(json['classFinishTime']) : null,
-      classStartTime:  json['classStartTime'] != null ? stringToDatetime(json['classStartTime']) : null,
-      classCourseName: json['classCourseName'],
-      meetingName: json['meetingName'],
-      meetingDescription: json['meetingDescription'],
-      meetingStartTime: json['meetingStartTime'] != null ? stringToDatetime(json['meetingStartTime']) : null,
-      meetingFinishTime: json['meetingFinishTime'] != null ? stringToDatetime(json['meetingFinishTime']) : null
-    );
+        classId: json['classId'],
+        meetingId: json['meetingId'],
+        classWeekDay: json['classWeekDay'],
+        classFinishTime: json['classFinishTime'] != null
+            ? stringToDatetime(json['classFinishTime'])
+            : null,
+        classStartTime: json['classStartTime'] != null
+            ? stringToDatetime(json['classStartTime'])
+            : null,
+        classCourseName: json['classCourseName'],
+        meetingName: json['meetingName'],
+        meetingDescription: json['meetingDescription'],
+        meetingStartTime: json['meetingStartTime'] != null
+            ? stringToDatetime(json['meetingStartTime'])
+            : null,
+        meetingFinishTime: json['meetingFinishTime'] != null
+            ? stringToDatetime(json['meetingFinishTime'])
+            : null,
+        finished: json['finished']);
   }
 }

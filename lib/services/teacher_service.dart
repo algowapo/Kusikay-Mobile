@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:http/http.dart';
+import 'package:kusikay_mobile/models/assistance.dart';
 import 'package:kusikay_mobile/models/teacher.dart';
 import 'dart:convert';
 
@@ -14,7 +15,7 @@ class TeacherService {
     final prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString('token');
     //suponiendo que useris es el mismo de teacher
-    final int? teacherId = prefs.getInt('userId');
+    final int? teacherId = prefs.getInt('teacherId');
 
     try {
       Response response = await get(
@@ -98,7 +99,6 @@ class TeacherService {
       List<dynamic> content = data["content"];
 
       for (var i = 0; i < content.length; i++) {
-        print(content[i]);
         teachers.add(Teacher.fromJson(content[i]));
       }
 
@@ -106,6 +106,37 @@ class TeacherService {
     } catch (e) {
       print(e);
       print('Error get teachers by Id');
+      return [];
+    }
+  }
+
+  Future<List<Assistance>> getTeachersByMeetingId(int meetingId) async {
+    List<Teacher> teachers = [];
+    List<Assistance> teachersAssistance = [];
+    final prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+
+    try {
+      Response response = await get(
+          Uri.parse(BASE_URL + '/meetings/$meetingId/teachers'),
+          headers: {HttpHeaders.authorizationHeader: token!});
+
+      Map<String, dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
+      List<dynamic> content = data["content"];
+
+      for (var i = 0; i < content.length; i++) {
+        Assistance a = Assistance(
+            teacherId: Teacher.fromJson(content[i]).id,
+            teacherName: Teacher.fromJson(content[i]).name,
+            assistance: false);
+
+        teachersAssistance.add(a);
+      }
+
+      return teachersAssistance;
+    } catch (e) {
+      print(e);
+      print('Error get teachers by Meeting Id assistance');
       return [];
     }
   }
