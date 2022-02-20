@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
+import 'package:intl/intl.dart';
 import 'package:kusikay_mobile/models/session_report.dart';
+import 'package:kusikay_mobile/services/session_service.dart';
+import 'package:kusikay_mobile/utils/util.dart';
 import 'package:kusikay_mobile/widgets/create_session_report_dialog.dart';
 import 'package:kusikay_mobile/widgets/report_card.dart';
 import 'package:kusikay_mobile/widgets/session_report_dialog.dart';
@@ -13,34 +16,78 @@ class ReportTeacher extends StatefulWidget {
 }
 
 class _ReportTeacherState extends State<ReportTeacher> {
-  SessionReport report = SessionReport(
-      1,
-      "2000-12-12",
-      "Buena clase Buena clase Buena clase Buena clase Buena clase Buena clase Buena clase Buena clase Buena clase Buena clase Buena clase Buena clase Buena clase Buena clase Buena clase",
-      "2021-12-12",
-      "Es una buena clase porque no enseñó Sopla pucha mano lorem gaaaaaa si e porque no enseñó Sopla pucha mano lorem gaaaaaa si e porque no enseñó Sopla pucha mano lorem gaaaaaa si",
-      90,
-      true,
-      "Hector",
-      "Gino",
-      "Juanca",
-      "Porque no",
-      1);
+  SessionService sessionService = SessionService();
+  List<SessionReport> sessionReports = [];
+  bool loading = true;
+
+  void getData() async {
+    await sessionService.getData();
+    assignData();
+  }
+
+  void assignData() {
+    loading = false;
+    setState(() {
+      sessionReports = sessionService.sessionReportList;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-
-    return Scaffold(
-        body: GridView.count(
-      crossAxisCount: 2,
-      physics: BouncingScrollPhysics(),
-      padding: EdgeInsets.all(width * 0.06),
-      mainAxisSpacing: width * 0.05,
-      crossAxisSpacing: width * 0.06,
-      childAspectRatio: 1.25,
-      children: [
-        InkWell(
+    DateFormat formatHourMinute = DateFormat('hh:mm');
+    DateFormat formatDay = DateFormat('d MMMM');
+    return loading
+        ? SizedBox() //TODO: Change to custom loading widget if necessary
+        : Scaffold(
+            body: GridView.count(
+            crossAxisCount: 2,
+            physics: const BouncingScrollPhysics(),
+            padding: EdgeInsets.all(width * 0.06),
+            mainAxisSpacing: width * 0.05,
+            crossAxisSpacing: width * 0.06,
+            childAspectRatio: 1.25,
+            children: [
+              for (var i = 0; i < sessionReports.length; i++)
+                InkWell(
+                  onTap: () => showAnimatedDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return sessionReports[i].status == 'completo'
+                          ? SessionReportDialog(sessionReports[i])
+                          : CreateSessionReportDialog(sessionReports[i]);
+                    },
+                    animationType: DialogTransitionType.slideFromBottom,
+                    curve: Curves.fastOutSlowIn,
+                    duration: const Duration(milliseconds: 500),
+                    barrierDismissible: true,
+                  ),
+                  child: ReportCard(
+                    status: sessionReports[i].status,
+                    date: formatDay
+                        .format(stringToDatetime(sessionReports[i].classDate)),
+                    time: formatHourMinute.format(
+                            stringToDatetime(sessionReports[i].classDate)) +
+                        '-' +
+                        formatHourMinute.format(
+                            stringToDatetime(sessionReports[i].classDate).add(
+                                Duration(hours: sessionReports[i].duration))),
+                  ),
+                ),
+              /*InkWell(
           onTap: () => showAnimatedDialog(
             context: context,
             builder: (BuildContext context) {
@@ -56,13 +103,8 @@ class _ReportTeacherState extends State<ReportTeacher> {
             date: '1 Agosto',
             time: '09:00-10:00',
           ),
-        ),
-        const ReportCard(
-          status: 'tarde',
-          date: '1 Agosto',
-          time: '12:00-13:00',
-        ),
-        InkWell(
+        ),*/
+              /*InkWell(
           onTap: () => showAnimatedDialog(
             context: context,
             builder: (BuildContext context) {
@@ -78,43 +120,8 @@ class _ReportTeacherState extends State<ReportTeacher> {
             date: '6 Agosto',
             time: '13:00-15:00',
           ),
-        ),
-        ReportCard(
-          status: 'pendiente',
-          date: '6 Agosto',
-          time: '19:00-20:00',
-        ),
-        ReportCard(
-          status: 'completo',
-          date: '30 Julio',
-          time: '13:00-15:00',
-        ),
-        ReportCard(
-          status: 'completo',
-          date: '28 Julio',
-          time: '13:00-15:00',
-        ),
-        ReportCard(
-          status: 'completo',
-          date: '28 Julio',
-          time: '13:00-15:00',
-        ),
-        ReportCard(
-          status: 'completo',
-          date: '28 Julio',
-          time: '13:00-15:00',
-        ),
-        ReportCard(
-          status: 'completo',
-          date: '28 Julio',
-          time: '13:00-15:00',
-        ),
-        ReportCard(
-          status: 'completo',
-          date: '28 Julio',
-          time: '13:00-15:00',
-        ),
-      ],
-    ));
+        ),*/
+            ],
+          ));
   }
 }
