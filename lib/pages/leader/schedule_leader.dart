@@ -67,10 +67,10 @@ class _ScheduleLeaderState extends State<ScheduleLeader> {
                   return Padding(
                       padding: EdgeInsets.all(width * 0.06),
                       child: InkWell(
-                        onTap: () {
+                        onTap: () async {
                           if (schedule.meetingId != null &&
                               schedule.finished == false) {
-                            showAnimatedDialog(
+                            await showAnimatedDialog(
                               context: context,
                               builder: (BuildContext context) {
                                 return AttendanceDialog(
@@ -84,9 +84,12 @@ class _ScheduleLeaderState extends State<ScheduleLeader> {
                               duration: const Duration(milliseconds: 500),
                               barrierDismissible: true,
                             );
+                            setState(() {
+                              getData();
+                            });
                           } else if (schedule.meetingId != null &&
                               schedule.finished == true) {
-                            showAnimatedDialog(
+                            await showAnimatedDialog(
                               context: context,
                               builder: (BuildContext context) {
                                 return AttendanceDialog(

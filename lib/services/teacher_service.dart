@@ -99,7 +99,6 @@ class TeacherService {
       List<dynamic> content = data["content"];
 
       for (var i = 0; i < content.length; i++) {
-        print(content[i]);
         teachers.add(Teacher.fromJson(content[i]));
       }
 
@@ -126,10 +125,11 @@ class TeacherService {
       List<dynamic> content = data["content"];
 
       for (var i = 0; i < content.length; i++) {
-        print(content[i]);
         Assistance a = Assistance(
             teacherId: Teacher.fromJson(content[i]).id,
-            teacherName: Teacher.fromJson(content[i]).name);
+            teacherName: Teacher.fromJson(content[i]).name,
+            assistance: false);
+
         teachersAssistance.add(a);
       }
 

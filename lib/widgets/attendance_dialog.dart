@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:kusikay_mobile/colors/kusikay_colors.dart';
 import 'package:kusikay_mobile/models/assistance.dart';
 import 'package:kusikay_mobile/models/teacher_schedule.dart';
+import 'package:kusikay_mobile/services/assistance_service.dart';
 import 'package:kusikay_mobile/services/teacher_service.dart';
 import 'package:kusikay_mobile/widgets/cross_button.dart';
 
@@ -21,21 +22,41 @@ class AttendanceDialog extends StatefulWidget {
 class _AttendanceDialogState extends State<AttendanceDialog> {
   List<Assistance> teacherAssistance = [];
   TeacherService teacherService = TeacherService();
+  AssistanceService assistanceService = AssistanceService();
   DateFormat formatHourMinute = DateFormat('hh:mm');
   DateFormat formatDate = DateFormat('dd/MM');
 
   void toggleActivate(index) {
     setState(() {
       teacherAssistance[index].assistance =
-          !teacherAssistance[index].assistance;
+          !teacherAssistance[index].assistance!;
     });
   }
 
   void getData() async {
-    print(widget.meeting.classStartTime.toString() + 'sadasda');
-    teacherAssistance =
-        await teacherService.getTeachersByMeetingId(widget.meeting.meetingId!);
+    teacherAssistance = widget.editable! == true
+        ? await teacherService.getTeachersByMeetingId(widget.meeting.meetingId!)
+        : await assistanceService.getAssistance(widget.meeting.meetingId!);
+
     setState(() {});
+  }
+
+  void createAssistance() async {
+    bool response = await assistanceService.createAssistance(
+        teacherAssistance, widget.meeting.meetingId!);
+
+    if (response) {
+      const snackBar = SnackBar(
+        content: Text('Asistencia guardada correctamente'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      Navigator.of(context).pop();
+    } else {
+      const snackBar = SnackBar(
+        content: Text('Error'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
 
   @override
@@ -83,7 +104,8 @@ class _AttendanceDialogState extends State<AttendanceDialog> {
                                     tapped: () => widget.editable! == true
                                         ? toggleActivate(index)
                                         : null,
-                                    active: teacherAssistance[index].assistance,
+                                    active:
+                                        teacherAssistance[index].assistance!,
                                   ),
                                 ],
                               )
@@ -140,8 +162,8 @@ class _AttendanceDialogState extends State<AttendanceDialog> {
                       widget.editable!
                           ? InkWell(
                               onTap: () {
-                                Navigator.pop(context);
-                                print("Se actualizo");
+                                createAssistance();
+                                //Navigator.pop(context);
                               },
                               child: Row(
                                 children: [
@@ -185,27 +207,11 @@ class _AttendanceDialogState extends State<AttendanceDialog> {
               ],
             ),
           )
-        : Container(
-            decoration: BoxDecoration(color: Colors.white),
-            height: height,
-            width: double.infinity,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Center(
-                    child: SpinKitFadingCircle(
-                  color: KColors.purple,
-                  size: 50,
-                )),
-                Padding(
-                  padding: EdgeInsets.all(5.0),
-                  child: Text(
-                    'Cargando Ranking',
-                    style: TextStyle(color: KColors.purple),
-                  ),
-                )
-              ],
-            ));
+        : const Center(
+            child: SpinKitFadingCircle(
+            color: KColors.purple,
+            size: 50,
+          ));
   }
 }
 

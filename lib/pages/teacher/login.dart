@@ -42,8 +42,6 @@ class _LoginState extends State<Login> {
       enabledData = tokenResponse.enabled;
     });
 
-    print(usernameData);
-    print(token);
     if (token != '') {
       if (roleData == 'teacher') {
         Navigator.of(context).pushNamedAndRemoveUntil(

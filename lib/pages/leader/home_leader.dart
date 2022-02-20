@@ -71,16 +71,19 @@ class _HomeLeaderState extends State<HomeLeader> {
       ),
       floatingActionButton: _currentIndex == 0
           ? FloatingActionButton.extended(
-              onPressed: () => showAnimatedDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return CreateMeetingDialog();
-                },
-                animationType: DialogTransitionType.slideFromBottom,
-                curve: Curves.fastOutSlowIn,
-                duration: const Duration(milliseconds: 500),
-                barrierDismissible: true,
-              ),
+              onPressed: () async {
+                await showAnimatedDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return CreateMeetingDialog();
+                  },
+                  animationType: DialogTransitionType.slideFromBottom,
+                  curve: Curves.fastOutSlowIn,
+                  duration: const Duration(milliseconds: 500),
+                  barrierDismissible: true,
+                );
+                setState(() {});
+              },
               label: const Text(
                 'Crear Reunion',
                 style: TextStyle(color: Colors.white),
