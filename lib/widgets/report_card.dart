@@ -69,6 +69,9 @@ class ReportCard extends StatelessWidget {
           Text(
             date,
             style: Theme.of(context).textTheme.headline1,
+            overflow: TextOverflow.fade,
+            maxLines: 1,
+            softWrap: false,
           ),
           const SizedBox(height: 6),
           Text(
