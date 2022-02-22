@@ -33,10 +33,12 @@ class _SessionReportDialogState extends State<SessionReportDialog> {
     textForm2.text = widget.report.comments;
   }
 
-  void toggleHaveClass() {
-    setState(() {
-      haveClass = !haveClass;
-    });
+  void classCheck() {
+    haveClass = true;
+  }
+
+  void classCross() {
+    haveClass = false;
   }
 
   void toggleEditing() {
@@ -88,7 +90,10 @@ class _SessionReportDialogState extends State<SessionReportDialog> {
                     fieldsEnabled
                         ? Row(
                             children: [
-                              BooleanSelector(tapped: toggleHaveClass)
+                              BooleanSelector(
+                                tappedCheck: classCheck,
+                                tappedCross: classCross,
+                              )
                             ],
                           )
                         : Text("boton suchi",
@@ -128,8 +133,7 @@ class _SessionReportDialogState extends State<SessionReportDialog> {
                               style: Theme.of(context).textTheme.subtitle2),
                           fieldsEnabled
                               ? CheckButton(
-                                  active: activeAssist1,
-                                  tapped: toggleHaveClass)
+                                  active: activeAssist1, tapped: classCheck)
                               : Text("boton suchi",
                                   style: Theme.of(context).textTheme.caption)
                         ],

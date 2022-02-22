@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:intl/intl.dart';
 import 'package:kusikay_mobile/models/session_report.dart';
+import 'package:kusikay_mobile/services/session_service.dart';
+import 'package:kusikay_mobile/utils/util.dart';
+import 'package:kusikay_mobile/widgets/boolean_selector.dart';
 import 'package:kusikay_mobile/widgets/check_button.dart';
-import 'package:kusikay_mobile/widgets/cross_button.dart';
 import 'package:kusikay_mobile/widgets/description_input.dart';
 
 class CreateSessionReportDialog extends StatefulWidget {
@@ -10,11 +13,11 @@ class CreateSessionReportDialog extends StatefulWidget {
   const CreateSessionReportDialog(this.report);
 
   @override
-  _CreateSesionReportDialogState createState() =>
-      _CreateSesionReportDialogState();
+  _CreateSessionReportDialogState createState() =>
+      _CreateSessionReportDialogState();
 }
 
-class _CreateSesionReportDialogState extends State<CreateSessionReportDialog> {
+class _CreateSessionReportDialogState extends State<CreateSessionReportDialog> {
   bool haveClass = true;
   bool activeHaveClass1 = false;
   bool activeHaveClass2 = true;
@@ -25,6 +28,39 @@ class _CreateSesionReportDialogState extends State<CreateSessionReportDialog> {
   var textForm1 = TextEditingController();
   var textForm2 = TextEditingController();
   var textFormHaveClass = TextEditingController();
+
+  SessionService sessionService = SessionService();
+
+  SessionReport get report => widget.report;
+
+  void updateSessionReport() {
+    SessionReport completeSessionReport = SessionReport(
+      report.id,
+      report.classDate,
+      textForm2.text,
+      report.createdAt,
+      textForm1.text,
+      int.parse(duration.text),
+      haveClass,
+      report.student1,
+      report.student2,
+      report.student3,
+      textFormHaveClass.text,
+      report.teacherId,
+      "completo",
+    );
+    sessionService.sessionReport = completeSessionReport;
+    sessionService.updateData();
+  }
+
+  void classCheck() {
+    haveClass = true;
+  }
+
+  void classCross() {
+    haveClass = false;
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -87,17 +123,12 @@ class _CreateSesionReportDialogState extends State<CreateSessionReportDialog> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("¿ Tuvo Clase?",
+                    Text("¿Tuvo Clase?",
                         style: Theme.of(context).textTheme.headline3),
-                    Row(
-                      children: [
-                        CheckButton(
-                            active: activeHaveClass1, tapped: toggleHaveClass1),
-                        SizedBox(width: width * 0.035),
-                        CrossButton(
-                            active: activeHaveClass2, tapped: toggleHaveClass2)
-                      ],
-                    )
+                    BooleanSelector(
+                      tappedCheck: classCheck,
+                      tappedCross: classCross,
+                    ),
                   ],
                 ),
                 SizedBox(
@@ -242,7 +273,8 @@ class _CreateSesionReportDialogState extends State<CreateSessionReportDialog> {
               children: [
                 InkWell(
                   onTap: () {
-                    print("Se creo");
+                    updateSessionReport();
+                    Navigator.of(context).pop();
                   },
                   child: Row(
                     children: [
@@ -268,12 +300,13 @@ class _CreateSesionReportDialogState extends State<CreateSessionReportDialog> {
 }
 
 class ReportDialogHeader extends StatelessWidget {
-  const ReportDialogHeader({
+  ReportDialogHeader({
     Key? key,
     required this.widget,
   }) : super(key: key);
 
   final CreateSessionReportDialog widget;
+  final DateFormat formatDay = DateFormat('d MMMM');
 
   @override
   Widget build(BuildContext context) {
@@ -287,7 +320,8 @@ class ReportDialogHeader extends StatelessWidget {
             children: [
               Text("Informe de Sesion",
                   style: Theme.of(context).textTheme.headline1),
-              Text("1 agosto", style: Theme.of(context).textTheme.subtitle2)
+              Text(formatDay.format(stringToDatetime(widget.report.classDate)),
+                  style: Theme.of(context).textTheme.subtitle2)
             ],
           ),
           SizedBox(

@@ -63,18 +63,21 @@ class _ReportTeacherState extends State<ReportTeacher> {
             children: [
               for (var i = 0; i < sessionReports.length; i++)
                 InkWell(
-                  onTap: () => showAnimatedDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return sessionReports[i].status == 'completo'
-                          ? SessionReportDialog(sessionReports[i])
-                          : CreateSessionReportDialog(sessionReports[i]);
-                    },
-                    animationType: DialogTransitionType.slideFromBottom,
-                    curve: Curves.fastOutSlowIn,
-                    duration: const Duration(milliseconds: 500),
-                    barrierDismissible: true,
-                  ),
+                  onTap: () {
+                    showAnimatedDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return sessionReports[i].status == 'completo'
+                            ? SessionReportDialog(sessionReports[i])
+                            : CreateSessionReportDialog(sessionReports[i]);
+                      },
+                      animationType: DialogTransitionType.slideFromBottom,
+                      curve: Curves.fastOutSlowIn,
+                      duration: const Duration(milliseconds: 500),
+                      barrierDismissible: true,
+                    );
+                    getData();
+                  },
                   child: ReportCard(
                     status: sessionReports[i].status,
                     date: formatDay
