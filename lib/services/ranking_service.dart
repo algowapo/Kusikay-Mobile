@@ -3,8 +3,9 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:kusikay_mobile/models/teacher_ranking.dart';
+import 'package:kusikay_mobile/utils/config.dart';
 
-var urlRanking = Uri.parse('http://10.0.2.2:8080/api/leaderboard');
+var urlRanking = Uri.parse('$BACKEND_URL/api/leaderboard');
 
 class RankingService {
   TeacherRanking myRankingModel = new TeacherRanking(0, '', 0);
@@ -24,7 +25,7 @@ class RankingService {
       }
 
       http.Response myRanking = await http.get(
-          Uri.parse('http://10.0.2.2:8080/api/ranking/$id'),
+          Uri.parse('$BACKEND_URL/api/ranking/$id'),
           headers: {HttpHeaders.authorizationHeader: token});
       Map responseMyRanking = jsonDecode(utf8.decode(myRanking.bodyBytes));
       myRankingModel.id = responseMyRanking['id'];

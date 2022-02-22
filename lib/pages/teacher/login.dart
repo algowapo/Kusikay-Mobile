@@ -35,15 +35,9 @@ class _LoginState extends State<Login> {
         username.text.toString(), password.text.toString());
     setState(() {
       token = tokenResponse.token.toString();
-      id = tokenResponse.id;
-      usernameData = tokenResponse.username;
-      passwordData = tokenResponse.password;
       roleData = tokenResponse.role;
-      enabledData = tokenResponse.enabled;
     });
 
-    print(usernameData);
-    print(token);
     if (token != '') {
       if (roleData == 'teacher') {
         Navigator.of(context).pushNamedAndRemoveUntil(
@@ -62,7 +56,10 @@ class _LoginState extends State<Login> {
       }
       //print("Inicio Sesión Exitoso");
     } else {
-      print("NO SE PUDO INICIAR SESIÓN");
+      const snackBar = SnackBar(
+        content: Text('Credenciales incorrectas'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 

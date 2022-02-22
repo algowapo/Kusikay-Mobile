@@ -55,8 +55,6 @@ class _RankingTeacherState extends State<RankingTeacher> {
     token = prefs.getString('token');
     myId = prefs.getInt('userId');
     teacherId = prefs.getInt('teacherId');
-    print("EL TEACHER ID ES:");
-    print(teacherId);
   }
 
   @override

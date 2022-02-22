@@ -7,6 +7,7 @@ PreferredSizeWidget KusikayAppBar(BuildContext context,
   double width = MediaQuery.of(context).size.width;
   return AppBar(
     elevation: 0,
+    automaticallyImplyLeading: false,
     toolbarHeight: width / 6,
     title: SizedBox(
       width: width / 4,

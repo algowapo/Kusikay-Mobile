@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kusikay_mobile/colors/kusikay_colors.dart';
 import 'package:kusikay_mobile/pages/leader/my_reports_leader.dart';
 import 'package:kusikay_mobile/pages/leader/review_report_leader.dart';
@@ -6,6 +8,7 @@ import 'package:kusikay_mobile/pages/leader/schedule_leader.dart';
 import 'package:kusikay_mobile/pages/teacher/contacts_teacher.dart';
 import 'package:kusikay_mobile/pages/teacher/ranking_teacher.dart';
 import 'package:kusikay_mobile/widgets/benefits_tab.dart';
+import 'package:kusikay_mobile/widgets/create_meeting_dialog.dart';
 import 'package:kusikay_mobile/widgets/kusikay_appbar.dart';
 
 class HomeLeader extends StatefulWidget {
@@ -66,8 +69,35 @@ class _HomeLeaderState extends State<HomeLeader> {
           ),
         ],
       ),
+
       appBar:
           KusikayAppBar(context, onBenefitTap: _benefitsTabTapped, back: true),
+      floatingActionButton: _currentIndex == 0
+          ? FloatingActionButton.extended(
+              onPressed: () async {
+                await showAnimatedDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return CreateMeetingDialog();
+                  },
+                  animationType: DialogTransitionType.slideFromBottom,
+                  curve: Curves.fastOutSlowIn,
+                  duration: const Duration(milliseconds: 500),
+                  barrierDismissible: true,
+                );
+                setState(() {});
+              },
+              label: const Text(
+                'Crear Reunion',
+                style: TextStyle(color: Colors.white),
+              ),
+              icon: const FaIcon(
+                FontAwesomeIcons.calendarPlus,
+                color: Colors.white,
+                size: 20,
+              ),
+            )
+          : null,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: _onItemTapped,
