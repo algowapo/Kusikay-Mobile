@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kusikay_mobile/models/teacher.dart';
+import 'package:kusikay_mobile/pages/leader/review_reports_leader.dart';
 import 'package:kusikay_mobile/services/teacher_service.dart';
 import 'package:kusikay_mobile/widgets/vertical_separator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ReviewReports extends StatefulWidget {
   const ReviewReports({Key? key}) : super(key: key);
@@ -71,6 +73,11 @@ class RevisarInformeTile extends StatelessWidget {
   final String name;
   final String phone;
 
+  Future<void> asign(String xd) async {
+    SharedPreferences aux = await SharedPreferences.getInstance();
+    aux.setString('teacherName', xd);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -84,6 +91,12 @@ class RevisarInformeTile extends StatelessWidget {
             : null,
         onTap: () {
           //dirigir a vista de Calixtro
+          asign(name);
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ReviewReportsTeacherLeader(nameTeacher: name)));
         },
       ),
     );

@@ -64,7 +64,8 @@ class _HomeTeacherState extends State<HomeTeacher> {
           ),
         ],
       ),
-      appBar: KusikayAppBar(context, onBenefitTap: _benefitsTabTapped),
+      appBar:
+          KusikayAppBar(context, onBenefitTap: _benefitsTabTapped, back: true),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: _onItemTapped,

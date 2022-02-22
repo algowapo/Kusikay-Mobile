@@ -16,7 +16,6 @@ class HomeLeader extends StatefulWidget {
 }
 
 class _HomeLeaderState extends State<HomeLeader> {
-
   static int _currentIndex = 0;
   static bool _showingBenefits = false;
 
@@ -67,7 +66,8 @@ class _HomeLeaderState extends State<HomeLeader> {
           ),
         ],
       ),
-      appBar: KusikayAppBar(context, onBenefitTap: _benefitsTabTapped),
+      appBar:
+          KusikayAppBar(context, onBenefitTap: _benefitsTabTapped, back: true),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: _onItemTapped,
