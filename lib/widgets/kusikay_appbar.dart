@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:kusikay_mobile/colors/kusikay_colors.dart';
 import 'package:kusikay_mobile/widgets/vertical_separator.dart';
 
 PreferredSizeWidget KusikayAppBar(BuildContext context,
-    {required VoidCallback onBenefitTap}) {
+    {required VoidCallback onBenefitTap, required bool back}) {
   double width = MediaQuery.of(context).size.width;
   return AppBar(
     elevation: 0,
@@ -15,6 +16,12 @@ PreferredSizeWidget KusikayAppBar(BuildContext context,
       ),
     ),
     titleSpacing: width / 18,
+    leading: back
+        ? null
+        : new IconButton(
+            icon: new Icon(Icons.arrow_back, color: KColors.blue),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
     actions: [
       Padding(
         padding: EdgeInsets.only(right: width / 40),

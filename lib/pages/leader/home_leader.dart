@@ -69,6 +69,9 @@ class _HomeLeaderState extends State<HomeLeader> {
           ),
         ],
       ),
+
+      appBar:
+          KusikayAppBar(context, onBenefitTap: _benefitsTabTapped, back: true),
       floatingActionButton: _currentIndex == 0
           ? FloatingActionButton.extended(
               onPressed: () async {
@@ -95,7 +98,6 @@ class _HomeLeaderState extends State<HomeLeader> {
               ),
             )
           : null,
-      appBar: KusikayAppBar(context, onBenefitTap: _benefitsTabTapped),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: _onItemTapped,
