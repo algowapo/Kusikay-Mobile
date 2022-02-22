@@ -29,8 +29,8 @@ class _SessionReportDialogState extends State<SessionReportDialog> {
     // TODO: implement initState
     super.initState();
     duration.text = "90";
-    textForm1.text = widget.report.description; //ejemplo de get
-    textForm2.text = widget.report.comments;
+    textForm1.text = widget.report.description!; //ejemplo de get
+    textForm2.text = widget.report.comments!;
   }
 
   void classCheck() {
@@ -129,7 +129,7 @@ class _SessionReportDialogState extends State<SessionReportDialog> {
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(widget.report.student1,
+                          Text(widget.report.student1!,
                               style: Theme.of(context).textTheme.subtitle2),
                           fieldsEnabled
                               ? CheckButton(
@@ -146,7 +146,7 @@ class _SessionReportDialogState extends State<SessionReportDialog> {
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(widget.report.student2,
+                          Text(widget.report.student2!,
                               style: Theme.of(context).textTheme.subtitle2),
                           fieldsEnabled
                               ? CheckButton(
@@ -163,7 +163,7 @@ class _SessionReportDialogState extends State<SessionReportDialog> {
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(widget.report.student3,
+                          Text(widget.report.student3!,
                               style: Theme.of(context).textTheme.subtitle2),
                           fieldsEnabled
                               ? CheckButton(
@@ -207,7 +207,7 @@ class _SessionReportDialogState extends State<SessionReportDialog> {
                     ? haveClass
                         ? desInput(context, textForm1)
                         : Container()
-                    : Text(widget.report.description,
+                    : Text(widget.report.description!,
                         style: Theme.of(context).textTheme.bodyText1),
                 SizedBox(
                   height: 20,
@@ -223,7 +223,7 @@ class _SessionReportDialogState extends State<SessionReportDialog> {
                     ? haveClass
                         ? desInput(context, textForm2)
                         : Container()
-                    : Text(widget.report.comments,
+                    : Text(widget.report.comments!,
                         style: Theme.of(context).textTheme.bodyText1),
                 SizedBox(
                   height: 20,

@@ -66,8 +66,11 @@ class _CreateSessionReportDialogState extends State<CreateSessionReportDialog> {
     // TODO: implement initState
     super.initState();
     duration.text = "90";
-    textForm1.text = widget.report.description; //ejemplo de get
-    textForm2.text = widget.report.comments;
+    textForm1.text = widget.report.description == null
+        ? ''
+        : widget.report.description!; //ejemplo de get
+    textForm2.text =
+        widget.report.comments == null ? '' : widget.report.comments!;
   }
 
   void toggleHaveClass1() {
@@ -160,7 +163,10 @@ class _CreateSessionReportDialogState extends State<CreateSessionReportDialog> {
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(widget.report.student1,
+                          Text(
+                              widget.report.student1 == null
+                                  ? ''
+                                  : widget.report.student1!,
                               style: Theme.of(context).textTheme.subtitle2),
                           CheckButton(active: activeAssist1, tapped: assist1)
                         ],
@@ -173,7 +179,10 @@ class _CreateSessionReportDialogState extends State<CreateSessionReportDialog> {
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(widget.report.student2,
+                          Text(
+                              widget.report.student2 == null
+                                  ? ''
+                                  : widget.report.student2!,
                               style: Theme.of(context).textTheme.subtitle2),
                           CheckButton(active: activeAssist2, tapped: assist2)
                         ],
@@ -186,7 +195,10 @@ class _CreateSessionReportDialogState extends State<CreateSessionReportDialog> {
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(widget.report.student3,
+                          Text(
+                              widget.report.student3 == null
+                                  ? ''
+                                  : widget.report.student3!,
                               style: Theme.of(context).textTheme.subtitle2),
                           CheckButton(active: activeAssist3, tapped: assist3)
                         ],
@@ -320,7 +332,7 @@ class ReportDialogHeader extends StatelessWidget {
             children: [
               Text("Informe de Sesion",
                   style: Theme.of(context).textTheme.headline1),
-              Text(formatDay.format(stringToDatetime(widget.report.classDate)),
+              Text(formatDay.format(stringToDatetime(widget.report.classDate!)),
                   style: Theme.of(context).textTheme.subtitle2)
             ],
           ),

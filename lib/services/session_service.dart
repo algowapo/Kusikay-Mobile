@@ -4,19 +4,23 @@ import 'dart:io';
 import 'package:http/http.dart';
 import 'package:kusikay_mobile/models/session_report.dart';
 import 'package:kusikay_mobile/utils/config.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SessionService {
   List<SessionReport> sessionReportList = [];
 
   // TODO: Make TeacherId and token dynamic with SharedPrefs
   Future<void> getData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final int? teacherId = prefs.getInt('teacherId');
+    final String? token = prefs.getString('token');
+
     sessionReportList = [];
     try {
       Response response = await get(
-        Uri.parse('$BACKEND_URL/api/teachers/1/sessionReports'),
+        Uri.parse('$BACKEND_URL/api/teachers/$teacherId/sessionReports'),
         headers: {
-          HttpHeaders.authorizationHeader:
-              'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaW5vIn0.bCcj99sO-yCeKqTfxBEUMinv8ei5EEsSDZy-mG1tjHaE6Z4Pn9YB7bJCrUOaqp-1pV1vXIBiPcNTY7KFWh12Zw',
+          HttpHeaders.authorizationHeader: token!,
         },
       );
       List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));

@@ -67,6 +67,7 @@ class _ReportTeacherState extends State<ReportTeacher> {
                     showAnimatedDialog(
                       context: context,
                       builder: (BuildContext context) {
+                        print(sessionReports[i]);
                         return sessionReports[i].status == 'completo'
                             ? SessionReportDialog(sessionReports[i])
                             : CreateSessionReportDialog(sessionReports[i]);
@@ -79,15 +80,15 @@ class _ReportTeacherState extends State<ReportTeacher> {
                     getData();
                   },
                   child: ReportCard(
-                    status: sessionReports[i].status,
+                    status: sessionReports[i].status!,
                     date: formatDay
-                        .format(stringToDatetime(sessionReports[i].classDate)),
+                        .format(stringToDatetime(sessionReports[i].classDate!)),
                     time: formatHourMinute.format(
-                            stringToDatetime(sessionReports[i].classDate)) +
+                            stringToDatetime(sessionReports[i].classDate!)) +
                         '-' +
                         formatHourMinute.format(
-                            stringToDatetime(sessionReports[i].classDate).add(
-                                Duration(hours: sessionReports[i].duration))),
+                            stringToDatetime(sessionReports[i].classDate!).add(
+                                Duration(hours: sessionReports[i].duration!))),
                   ),
                 ),
               /*InkWell(
