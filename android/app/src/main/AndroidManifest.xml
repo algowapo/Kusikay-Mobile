@@ -1,7 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="pe.com.kusikay.kusikay_mobile">
+   <uses-permission android:name="android.permission.INTERNET" /> <!-- This Line -->
    <application
         android:label="kusikay_mobile"
+        android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

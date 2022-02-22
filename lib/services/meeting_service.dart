@@ -1,11 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:kusikay_mobile/utils/config.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MeetingService {
-  static const BASE_URL = 'http://10.0.2.2:8080/api/';
+  static const BASE_URL = '$BACKEND_URL/api/';
 
   Future<bool> createMeeting(
       name, description, DateTime date, TimeOfDay hour) async {

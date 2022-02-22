@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:http/http.dart';
 import 'package:kusikay_mobile/models/session_report.dart';
+import 'package:kusikay_mobile/utils/config.dart';
 
 class SessionService {
   List<SessionReport> sessionReportList = [];
@@ -11,7 +12,7 @@ class SessionService {
   Future<void> getData() async {
     try {
       Response response = await get(
-        Uri.parse('http://10.0.2.2:8080/api/teachers/1/sessionReports'),
+        Uri.parse('$BACKEND_URL/api/teachers/1/sessionReports'),
         headers: {
           HttpHeaders.authorizationHeader:
               'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaW5vIn0.bCcj99sO-yCeKqTfxBEUMinv8ei5EEsSDZy-mG1tjHaE6Z4Pn9YB7bJCrUOaqp-1pV1vXIBiPcNTY7KFWh12Zw',

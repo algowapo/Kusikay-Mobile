@@ -5,10 +5,11 @@ import 'package:kusikay_mobile/models/teacher.dart';
 import 'dart:convert';
 
 import 'package:kusikay_mobile/models/teacher_schedule.dart';
+import 'package:kusikay_mobile/utils/config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TeacherService {
-  static const BASE_URL = 'http://10.0.2.2:8080/api';
+  static const BASE_URL = '$BACKEND_URL/api';
 
   Future<List<TeacherSchedule>> getTeacherSchedule() async {
     List<TeacherSchedule> teacherSchedule = [];
