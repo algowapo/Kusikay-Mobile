@@ -92,6 +92,9 @@ class _SessionReportDialogState extends State<SessionReportDialog> {
         widget.report.student2 == null ? '' : widget.report.student2!;
     student3.text =
         widget.report.student3 == null ? '' : widget.report.student3!;
+    haveClass = widget.report.hadClass!;
+    whyNotClass.text =
+        widget.report.whyNotClass == null ? '' : widget.report.whyNotClass!;
   }
 
   void classCheck() {
@@ -152,8 +155,8 @@ class _SessionReportDialogState extends State<SessionReportDialog> {
                         ? Row(
                             children: [
                               BooleanSelector(
-                                tappedCheck: classCheck,
-                                tappedCross: classCross,
+                                tappedCheck: () => {},
+                                tappedCross: () => {},
                                 activo: report.hadClass,
                               )
                             ],
@@ -177,7 +180,10 @@ class _SessionReportDialogState extends State<SessionReportDialog> {
                     : SizedBox(
                         height: 20,
                       ),
-                haveClass ? Container() : desInput(context, whyNotClass),
+                haveClass
+                    ? Container()
+                    : Text(whyNotClass.text,
+                        style: Theme.of(context).textTheme.subtitle2),
                 haveClass
                     ? Container()
                     : SizedBox(
@@ -301,8 +307,10 @@ class _SessionReportDialogState extends State<SessionReportDialog> {
                 ),
                 fieldsEnabled
                     ? Container()
-                    : Text("Duración de la clase",
-                        style: Theme.of(context).textTheme.headline3),
+                    : haveClass
+                        ? Text("Duración de la clase",
+                            style: Theme.of(context).textTheme.headline3)
+                        : Container(),
                 fieldsEnabled
                     ? Container()
                     : SizedBox(
@@ -310,8 +318,10 @@ class _SessionReportDialogState extends State<SessionReportDialog> {
                       ),
                 fieldsEnabled
                     ? Container()
-                    : Text("${widget.report.duration.toString()} minutos",
-                        style: Theme.of(context).textTheme.bodyText1),
+                    : haveClass
+                        ? Text("${widget.report.duration.toString()} minutos",
+                            style: Theme.of(context).textTheme.bodyText1)
+                        : Container(),
                 SizedBox(
                   height: 20,
                 ),
@@ -355,8 +365,20 @@ class _SessionReportDialogState extends State<SessionReportDialog> {
                             toggleEditing();
                             print("no se puede editar");
                           } else {
-                            toggleEditing();
-                            print('se puede editar');
+                            if (widget.report.hadClass == false) {
+                              () => {};
+                              const snackBar = SnackBar(
+                                content:
+                                    Text('Este informe no se puede editar'),
+                                behavior: SnackBarBehavior.floating,
+                              );
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                              Navigator.of(context).pop();
+                            } else {
+                              toggleEditing();
+                              print('se puede editar');
+                            }
                           }
                         },
                         child: Row(
