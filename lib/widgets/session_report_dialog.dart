@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:intl/intl.dart';
 import 'package:kusikay_mobile/models/session_report.dart';
+import 'package:kusikay_mobile/services/session_service.dart';
+import 'package:kusikay_mobile/utils/util.dart';
 import 'package:kusikay_mobile/widgets/boolean_selector.dart';
 import 'package:kusikay_mobile/widgets/check_button.dart';
 import 'package:kusikay_mobile/widgets/description_input.dart';
@@ -15,22 +18,83 @@ class SessionReportDialog extends StatefulWidget {
 
 class _SessionReportDialogState extends State<SessionReportDialog> {
   bool fieldsEnabled = false;
-  bool activeAssist1 = false;
-  bool activeAssist2 = false;
-  bool activeAssist3 = false;
+
   bool haveClass = true;
   var duration = TextEditingController();
-  var textForm1 = TextEditingController();
-  var textForm2 = TextEditingController();
-  var textFormHaveClass = TextEditingController();
+  var student1 = TextEditingController();
+  var student2 = TextEditingController();
+  var student3 = TextEditingController();
+  var description = TextEditingController();
+  var commets = TextEditingController();
+  var whyNotClass = TextEditingController();
+
+  SessionService sessionService = SessionService();
+
+  SessionReport get report => widget.report;
+
+  void updateSessionReport() async {
+    SessionReport completeSessionReport = SessionReport(
+      report.id,
+      report.classDate,
+      commets.text,
+      report.createdAt,
+      description.text,
+      int.parse(duration.text),
+      haveClass,
+      student1.text,
+      student2.text,
+      student3.text,
+      report.assistanceStudent1,
+      report.assistanceStudent2,
+      report.assistanceStudent3,
+      whyNotClass.text,
+      report.teacherId,
+      "completo",
+    );
+    completeSessionReport.createdAt = DateTime.now().toString();
+    completeSessionReport.assistanceStudent1 = report.assistanceStudent1;
+    completeSessionReport.assistanceStudent2 = report.assistanceStudent2;
+    completeSessionReport.assistanceStudent3 = report.assistanceStudent3;
+
+    sessionService.sessionReport = completeSessionReport;
+    bool response = await sessionService.updateData();
+    if (response == true) {
+      const snackBar = SnackBar(
+        content: Text('Informe de sesión actualizado correctamente'),
+        behavior: SnackBarBehavior.floating,
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      Navigator.of(context).pop();
+    } else {
+      const snackBar = SnackBar(
+        content: Text('Error al actualizar informe de sesión'),
+        behavior: SnackBarBehavior.floating,
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    duration.text = "90";
-    textForm1.text = widget.report.description; //ejemplo de get
-    textForm2.text = widget.report.comments;
+    duration.text = widget.report.duration == null
+        ? ''
+        : widget.report.duration!.toString();
+    description.text = widget.report.description == null
+        ? ''
+        : widget.report.description!; //ejemplo de get
+    commets.text =
+        widget.report.comments == null ? '' : widget.report.comments!;
+    student1.text =
+        widget.report.student1 == null ? '' : widget.report.student1!;
+    student2.text =
+        widget.report.student2 == null ? '' : widget.report.student2!;
+    student3.text =
+        widget.report.student3 == null ? '' : widget.report.student3!;
+    haveClass = widget.report.hadClass!;
+    whyNotClass.text =
+        widget.report.whyNotClass == null ? '' : widget.report.whyNotClass!;
   }
 
   void classCheck() {
@@ -49,19 +113,19 @@ class _SessionReportDialogState extends State<SessionReportDialog> {
 
   void assist1() {
     setState(() {
-      activeAssist1 = !activeAssist1;
+      report.assistanceStudent1 = !report.assistanceStudent1;
     });
   }
 
   void assist2() {
     setState(() {
-      activeAssist2 = !activeAssist2;
+      report.assistanceStudent2 = !report.assistanceStudent2;
     });
   }
 
   void assist3() {
     setState(() {
-      activeAssist3 = !activeAssist3;
+      report.assistanceStudent3 = !report.assistanceStudent3;
     });
   }
 
@@ -91,13 +155,17 @@ class _SessionReportDialogState extends State<SessionReportDialog> {
                         ? Row(
                             children: [
                               BooleanSelector(
-                                tappedCheck: classCheck,
-                                tappedCross: classCross,
+                                tappedCheck: () => {},
+                                tappedCross: () => {},
+                                activo: report.hadClass,
                               )
                             ],
                           )
-                        : Text("boton suchi",
-                            style: Theme.of(context).textTheme.caption)
+                        : BooleanSelector(
+                            tappedCheck: () => {},
+                            tappedCross: () => {},
+                            activo: report.hadClass,
+                          )
                   ],
                 ),
                 SizedBox(
@@ -112,7 +180,10 @@ class _SessionReportDialogState extends State<SessionReportDialog> {
                     : SizedBox(
                         height: 20,
                       ),
-                haveClass ? Container() : desInput(context, textFormHaveClass),
+                haveClass
+                    ? Container()
+                    : Text(whyNotClass.text,
+                        style: Theme.of(context).textTheme.subtitle2),
                 haveClass
                     ? Container()
                     : SizedBox(
@@ -129,13 +200,15 @@ class _SessionReportDialogState extends State<SessionReportDialog> {
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(widget.report.student1,
+                          Text(widget.report.student1!,
                               style: Theme.of(context).textTheme.subtitle2),
                           fieldsEnabled
                               ? CheckButton(
-                                  active: activeAssist1, tapped: classCheck)
-                              : Text("boton suchi",
-                                  style: Theme.of(context).textTheme.caption)
+                                  active: report.assistanceStudent1,
+                                  tapped: assist1)
+                              : CheckButton(
+                                  active: report.assistanceStudent1,
+                                  tapped: () => {})
                         ],
                       )
                     : Container(),
@@ -146,13 +219,15 @@ class _SessionReportDialogState extends State<SessionReportDialog> {
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(widget.report.student2,
+                          Text(widget.report.student2!,
                               style: Theme.of(context).textTheme.subtitle2),
                           fieldsEnabled
                               ? CheckButton(
-                                  active: activeAssist2, tapped: assist2)
-                              : Text("boton suchi",
-                                  style: Theme.of(context).textTheme.caption)
+                                  active: report.assistanceStudent2,
+                                  tapped: assist2)
+                              : CheckButton(
+                                  active: report.assistanceStudent2,
+                                  tapped: () => {})
                         ],
                       )
                     : Container(),
@@ -163,13 +238,15 @@ class _SessionReportDialogState extends State<SessionReportDialog> {
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(widget.report.student3,
+                          Text(widget.report.student3!,
                               style: Theme.of(context).textTheme.subtitle2),
                           fieldsEnabled
                               ? CheckButton(
-                                  active: activeAssist3, tapped: assist3)
-                              : Text("boton suchi",
-                                  style: Theme.of(context).textTheme.caption)
+                                  active: report.assistanceStudent3,
+                                  tapped: assist3)
+                              : CheckButton(
+                                  active: report.assistanceStudent3,
+                                  tapped: () => {})
                         ],
                       )
                     : Container(),
@@ -205,9 +282,9 @@ class _SessionReportDialogState extends State<SessionReportDialog> {
                 ),
                 fieldsEnabled
                     ? haveClass
-                        ? desInput(context, textForm1)
+                        ? desInput(context, description)
                         : Container()
-                    : Text(widget.report.description,
+                    : Text(widget.report.description!,
                         style: Theme.of(context).textTheme.bodyText1),
                 SizedBox(
                   height: 20,
@@ -221,45 +298,19 @@ class _SessionReportDialogState extends State<SessionReportDialog> {
                 ),
                 fieldsEnabled
                     ? haveClass
-                        ? desInput(context, textForm2)
+                        ? desInput(context, commets)
                         : Container()
-                    : Text(widget.report.comments,
+                    : Text(widget.report.comments!,
                         style: Theme.of(context).textTheme.bodyText1),
                 SizedBox(
                   height: 20,
                 ),
                 fieldsEnabled
-                    ? haveClass
-                        ? Text("Calificación de la clase",
-                            style: Theme.of(context).textTheme.headline3)
-                        : Container()
-                    : Container(),
-                fieldsEnabled
-                    ? haveClass
-                        ? Center(
-                            child: RatingBar.builder(
-                              initialRating: 3,
-                              minRating: 1,
-                              direction: Axis.horizontal,
-                              allowHalfRating: true,
-                              itemCount: 5,
-                              itemPadding:
-                                  EdgeInsets.symmetric(horizontal: 4.0),
-                              itemBuilder: (context, _) => Icon(
-                                Icons.star,
-                                color: Colors.amber,
-                              ),
-                              onRatingUpdate: (rating) {
-                                print(rating);
-                              },
-                            ),
-                          )
-                        : Container()
-                    : Container(),
-                fieldsEnabled
                     ? Container()
-                    : Text("Duración de la clase",
-                        style: Theme.of(context).textTheme.headline3),
+                    : haveClass
+                        ? Text("Duración de la clase",
+                            style: Theme.of(context).textTheme.headline3)
+                        : Container(),
                 fieldsEnabled
                     ? Container()
                     : SizedBox(
@@ -267,8 +318,10 @@ class _SessionReportDialogState extends State<SessionReportDialog> {
                       ),
                 fieldsEnabled
                     ? Container()
-                    : Text("${widget.report.duration.toString()} minutos",
-                        style: Theme.of(context).textTheme.bodyText1),
+                    : haveClass
+                        ? Text("${widget.report.duration.toString()} minutos",
+                            style: Theme.of(context).textTheme.bodyText1)
+                        : Container(),
                 SizedBox(
                   height: 20,
                 ),
@@ -312,8 +365,20 @@ class _SessionReportDialogState extends State<SessionReportDialog> {
                             toggleEditing();
                             print("no se puede editar");
                           } else {
-                            toggleEditing();
-                            print('se puede editar');
+                            if (widget.report.hadClass == false) {
+                              () => {};
+                              const snackBar = SnackBar(
+                                content:
+                                    Text('Este informe no se puede editar'),
+                                behavior: SnackBarBehavior.floating,
+                              );
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                              Navigator.of(context).pop();
+                            } else {
+                              toggleEditing();
+                              print('se puede editar');
+                            }
                           }
                         },
                         child: Row(
@@ -335,8 +400,7 @@ class _SessionReportDialogState extends State<SessionReportDialog> {
                 fieldsEnabled
                     ? InkWell(
                         onTap: () {
-                          Navigator.pop(context);
-                          print("Se actualizo");
+                          updateSessionReport();
                         },
                         child: Row(
                           children: [
@@ -380,12 +444,15 @@ class _SessionReportDialogState extends State<SessionReportDialog> {
 }
 
 class ReportDialogHeader extends StatelessWidget {
-  const ReportDialogHeader({
+  ReportDialogHeader({
     Key? key,
     required this.widget,
   }) : super(key: key);
 
   final SessionReportDialog widget;
+
+  final DateFormat formatDayMonth = DateFormat('dd MMMM');
+  final DateFormat formatDate = DateFormat('dd/MM/yyyy hh:mm');
 
   @override
   Widget build(BuildContext context) {
@@ -399,18 +466,17 @@ class ReportDialogHeader extends StatelessWidget {
             children: [
               Text("Informe de Sesion",
                   style: Theme.of(context).textTheme.headline1),
-              Text("1 agosto", style: Theme.of(context).textTheme.subtitle2)
+              Text(
+                  formatDayMonth
+                      .format(stringToDatetime(widget.report.classDate!)),
+                  style: Theme.of(context).textTheme.subtitle2)
             ],
           ),
           SizedBox(
             height: 7,
           ),
-          Text("Llenado por: Hector Suzuki",
-              style: Theme.of(context).textTheme.caption),
-          SizedBox(
-            height: 2,
-          ),
-          Text("Fecha de llenado: ${widget.report.createdAt}",
+          Text(
+              "Fecha de llenado: ${formatDate.format(stringToDatetime(widget.report.createdAt!))}",
               style: Theme.of(context).textTheme.caption),
         ],
       ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
+import 'package:kusikay_mobile/colors/kusikay_colors.dart';
 import 'package:kusikay_mobile/models/session_report.dart';
 import 'package:kusikay_mobile/services/session_service.dart';
 import 'package:kusikay_mobile/utils/util.dart';
@@ -51,7 +53,11 @@ class _ReportTeacherState extends State<ReportTeacher> {
     DateFormat formatHourMinute = DateFormat('hh:mm');
     DateFormat formatDay = DateFormat('d MMMM');
     return loading
-        ? SizedBox() //TODO: Change to custom loading widget if necessary
+        ? const Center(
+            child: SpinKitFadingCircle(
+            color: KColors.blue,
+            size: 50,
+          ))
         : Scaffold(
             body: GridView.count(
             crossAxisCount: 2,
@@ -63,10 +69,11 @@ class _ReportTeacherState extends State<ReportTeacher> {
             children: [
               for (var i = 0; i < sessionReports.length; i++)
                 InkWell(
-                  onTap: () {
-                    showAnimatedDialog(
+                  onTap: () async {
+                    await showAnimatedDialog(
                       context: context,
                       builder: (BuildContext context) {
+                        print(sessionReports[i]);
                         return sessionReports[i].status == 'completo'
                             ? SessionReportDialog(sessionReports[i])
                             : CreateSessionReportDialog(sessionReports[i]);
@@ -79,15 +86,15 @@ class _ReportTeacherState extends State<ReportTeacher> {
                     getData();
                   },
                   child: ReportCard(
-                    status: sessionReports[i].status,
+                    status: sessionReports[i].status!,
                     date: formatDay
-                        .format(stringToDatetime(sessionReports[i].classDate)),
+                        .format(stringToDatetime(sessionReports[i].classDate!)),
                     time: formatHourMinute.format(
-                            stringToDatetime(sessionReports[i].classDate)) +
+                            stringToDatetime(sessionReports[i].classDate!)) +
                         '-' +
                         formatHourMinute.format(
-                            stringToDatetime(sessionReports[i].classDate).add(
-                                Duration(hours: sessionReports[i].duration))),
+                            stringToDatetime(sessionReports[i].classDate!).add(
+                                Duration(hours: sessionReports[i].duration!))),
                   ),
                 ),
               /*InkWell(

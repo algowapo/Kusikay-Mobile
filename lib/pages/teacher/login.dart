@@ -58,6 +58,7 @@ class _LoginState extends State<Login> {
     } else {
       const snackBar = SnackBar(
         content: Text('Credenciales incorrectas'),
+        behavior: SnackBarBehavior.floating,
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
