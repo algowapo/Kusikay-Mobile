@@ -5,8 +5,12 @@ import 'package:kusikay_mobile/widgets/cross_button.dart';
 class BooleanSelector extends StatefulWidget {
   final VoidCallback tappedCheck;
   final VoidCallback tappedCross;
+  final bool? activo; //true check false cross
   const BooleanSelector(
-      {Key? key, required this.tappedCheck, required this.tappedCross})
+      {Key? key,
+      required this.tappedCheck,
+      required this.tappedCross,
+      this.activo})
       : super(key: key);
 
   @override
@@ -14,8 +18,24 @@ class BooleanSelector extends StatefulWidget {
 }
 
 class _BooleanSelectorState extends State<BooleanSelector> {
-  bool check = false;
+  bool check = true;
   bool cross = false;
+
+  @override
+  void initState() {
+    if (widget.activo == true) {
+      setState(() {
+        check = true;
+        cross = false;
+      });
+    } else {
+      setState(() {
+        check = false;
+        cross = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -32,7 +52,7 @@ class _BooleanSelectorState extends State<BooleanSelector> {
     setState(() {
       check = true;
       cross = false;
-      widget.tappedCheck;
+      widget.tappedCheck();
     });
   }
 
@@ -40,7 +60,7 @@ class _BooleanSelectorState extends State<BooleanSelector> {
     setState(() {
       check = false;
       cross = true;
-      widget.tappedCross;
+      widget.tappedCross();
     });
   }
 }

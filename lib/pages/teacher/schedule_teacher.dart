@@ -22,7 +22,9 @@ class _ScheduleTeacherState extends State<ScheduleTeacher> {
 
   void getData() async {
     teacherSchedule = await teacherService.getTeacherSchedule();
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override

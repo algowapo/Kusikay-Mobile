@@ -19,46 +19,72 @@ class CreateSessionReportDialog extends StatefulWidget {
 
 class _CreateSessionReportDialogState extends State<CreateSessionReportDialog> {
   bool haveClass = true;
-  bool activeHaveClass1 = false;
-  bool activeHaveClass2 = true;
-  bool activeAssist1 = false;
-  bool activeAssist2 = false;
-  bool activeAssist3 = false;
   var duration = TextEditingController();
-  var textForm1 = TextEditingController();
-  var textForm2 = TextEditingController();
-  var textFormHaveClass = TextEditingController();
+  var student1 = TextEditingController();
+  var student2 = TextEditingController();
+  var student3 = TextEditingController();
+  var description = TextEditingController();
+  var commets = TextEditingController();
+  var whyNotClass = TextEditingController();
 
   SessionService sessionService = SessionService();
 
   SessionReport get report => widget.report;
 
-  void updateSessionReport() {
+  void updateSessionReport() async {
     SessionReport completeSessionReport = SessionReport(
       report.id,
       report.classDate,
-      textForm2.text,
+      commets.text,
       report.createdAt,
-      textForm1.text,
+      description.text,
       int.parse(duration.text),
       haveClass,
-      report.student1,
-      report.student2,
-      report.student3,
-      textFormHaveClass.text,
+      student1.text,
+      student2.text,
+      student3.text,
+      report.assistanceStudent1,
+      report.assistanceStudent2,
+      report.assistanceStudent3,
+      whyNotClass.text,
       report.teacherId,
       "completo",
     );
+    completeSessionReport.createdAt = DateTime.now().toString();
+    completeSessionReport.assistanceStudent1 = report.assistanceStudent1;
+    completeSessionReport.assistanceStudent2 = report.assistanceStudent2;
+    completeSessionReport.assistanceStudent3 = report.assistanceStudent3;
+
     sessionService.sessionReport = completeSessionReport;
-    sessionService.updateData();
+    bool response = await sessionService.updateData();
+    if (response == true) {
+      const snackBar = SnackBar(
+        content: Text('Informe de sesión creado correctamente'),
+        behavior: SnackBarBehavior.floating,
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      Navigator.of(context).pop();
+    } else {
+      const snackBar = SnackBar(
+        content: Text('Error al crear informe de sesión'),
+        behavior: SnackBarBehavior.floating,
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
 
   void classCheck() {
-    haveClass = true;
+    setState(() {
+      haveClass = true;
+    });
+    print(haveClass);
   }
 
   void classCross() {
-    haveClass = false;
+    setState(() {
+      haveClass = false;
+    });
+    print(haveClass);
   }
 
   @override
@@ -66,42 +92,32 @@ class _CreateSessionReportDialogState extends State<CreateSessionReportDialog> {
     // TODO: implement initState
     super.initState();
     duration.text = "90";
-    textForm1.text = widget.report.description == null
+    report.hadClass = true;
+    description.text = widget.report.description == null
         ? ''
         : widget.report.description!; //ejemplo de get
-    textForm2.text =
+    commets.text =
         widget.report.comments == null ? '' : widget.report.comments!;
-  }
-
-  void toggleHaveClass1() {
-    setState(() {
-      haveClass = !haveClass;
-      activeHaveClass1 = !activeHaveClass1;
-    });
-  }
-
-  void toggleHaveClass2() {
-    setState(() {
-      haveClass = !haveClass;
-      activeHaveClass2 = !activeHaveClass2;
-    });
+    student1.text = "";
+    student2.text = "";
+    student3.text = "";
   }
 
   void assist1() {
     setState(() {
-      activeAssist1 = !activeAssist1;
+      report.assistanceStudent1 = !report.assistanceStudent1;
     });
   }
 
   void assist2() {
     setState(() {
-      activeAssist2 = !activeAssist2;
+      report.assistanceStudent2 = !report.assistanceStudent2;
     });
   }
 
   void assist3() {
     setState(() {
-      activeAssist3 = !activeAssist3;
+      report.assistanceStudent3 = !report.assistanceStudent3;
     });
   }
 
@@ -129,8 +145,9 @@ class _CreateSessionReportDialogState extends State<CreateSessionReportDialog> {
                     Text("¿Tuvo Clase?",
                         style: Theme.of(context).textTheme.headline3),
                     BooleanSelector(
-                      tappedCheck: classCheck,
-                      tappedCross: classCross,
+                      tappedCheck: () => classCheck(),
+                      tappedCross: () => classCross(),
+                      activo: report.hadClass,
                     ),
                   ],
                 ),
@@ -146,7 +163,7 @@ class _CreateSessionReportDialogState extends State<CreateSessionReportDialog> {
                     : SizedBox(
                         height: 20,
                       ),
-                haveClass ? Container() : desInput(context, textFormHaveClass),
+                haveClass ? Container() : desInput(context, whyNotClass),
                 haveClass
                     ? Container()
                     : SizedBox(
@@ -163,12 +180,17 @@ class _CreateSessionReportDialogState extends State<CreateSessionReportDialog> {
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                              widget.report.student1 == null
-                                  ? ''
-                                  : widget.report.student1!,
-                              style: Theme.of(context).textTheme.subtitle2),
-                          CheckButton(active: activeAssist1, tapped: assist1)
+                          SizedBox(
+                            width: width * 0.6,
+                            child: TextField(
+                              controller: student1,
+                              style: Theme.of(context).textTheme.caption,
+                              decoration: InputDecoration(),
+                            ),
+                          ),
+                          CheckButton(
+                              active: report.assistanceStudent1,
+                              tapped: assist1)
                         ],
                       )
                     : Container(),
@@ -179,12 +201,17 @@ class _CreateSessionReportDialogState extends State<CreateSessionReportDialog> {
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                              widget.report.student2 == null
-                                  ? ''
-                                  : widget.report.student2!,
-                              style: Theme.of(context).textTheme.subtitle2),
-                          CheckButton(active: activeAssist2, tapped: assist2)
+                          SizedBox(
+                            width: width * 0.6,
+                            child: TextField(
+                              controller: student2,
+                              style: Theme.of(context).textTheme.caption,
+                              decoration: InputDecoration(),
+                            ),
+                          ),
+                          CheckButton(
+                              active: report.assistanceStudent2,
+                              tapped: assist2)
                         ],
                       )
                     : Container(),
@@ -195,12 +222,17 @@ class _CreateSessionReportDialogState extends State<CreateSessionReportDialog> {
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                              widget.report.student3 == null
-                                  ? ''
-                                  : widget.report.student3!,
-                              style: Theme.of(context).textTheme.subtitle2),
-                          CheckButton(active: activeAssist3, tapped: assist3)
+                          SizedBox(
+                            width: width * 0.6,
+                            child: TextField(
+                              controller: student3,
+                              style: Theme.of(context).textTheme.caption,
+                              decoration: InputDecoration(),
+                            ),
+                          ),
+                          CheckButton(
+                              active: report.assistanceStudent3,
+                              tapped: assist3)
                         ],
                       )
                     : Container(),
@@ -228,7 +260,7 @@ class _CreateSessionReportDialogState extends State<CreateSessionReportDialog> {
                 SizedBox(
                   height: 10,
                 ),
-                haveClass ? desInput(context, textForm1) : Container(),
+                haveClass ? desInput(context, description) : Container(),
                 SizedBox(
                   height: 20,
                 ),
@@ -239,33 +271,7 @@ class _CreateSessionReportDialogState extends State<CreateSessionReportDialog> {
                 SizedBox(
                   height: 10,
                 ),
-                haveClass ? desInput(context, textForm2) : Container(),
-                SizedBox(
-                  height: 20,
-                ),
-                haveClass
-                    ? Text("Calificación de la clase",
-                        style: Theme.of(context).textTheme.headline3)
-                    : Container(),
-                haveClass
-                    ? Center(
-                        child: RatingBar.builder(
-                          initialRating: 3,
-                          minRating: 1,
-                          direction: Axis.horizontal,
-                          allowHalfRating: true,
-                          itemCount: 5,
-                          itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                          itemBuilder: (context, _) => Icon(
-                            Icons.star,
-                            color: Colors.amber,
-                          ),
-                          onRatingUpdate: (rating) {
-                            print(rating);
-                          },
-                        ),
-                      )
-                    : Container(),
+                haveClass ? desInput(context, commets) : Container(),
                 SizedBox(
                   height: 20,
                 ),
@@ -286,7 +292,6 @@ class _CreateSessionReportDialogState extends State<CreateSessionReportDialog> {
                 InkWell(
                   onTap: () {
                     updateSessionReport();
-                    Navigator.of(context).pop();
                   },
                   child: Row(
                     children: [

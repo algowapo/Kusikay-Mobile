@@ -63,8 +63,8 @@ class _ReportTeacherState extends State<ReportTeacher> {
             children: [
               for (var i = 0; i < sessionReports.length; i++)
                 InkWell(
-                  onTap: () {
-                    showAnimatedDialog(
+                  onTap: () async {
+                    await showAnimatedDialog(
                       context: context,
                       builder: (BuildContext context) {
                         print(sessionReports[i]);

@@ -9,6 +9,9 @@ class SessionReport {
   late String? student1;
   late String? student2;
   late String? student3;
+  late bool assistanceStudent1 = false;
+  late bool assistanceStudent2 = false;
+  late bool assistanceStudent3 = false;
   late String? whyNotClass;
   late int? teacherId;
   late String? status;
@@ -24,6 +27,9 @@ class SessionReport {
       this.student1,
       this.student2,
       this.student3,
+      this.assistanceStudent1,
+      this.assistanceStudent2,
+      this.assistanceStudent3,
       this.whyNotClass,
       this.teacherId,
       this.status);

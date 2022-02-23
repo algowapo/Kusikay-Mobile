@@ -46,14 +46,13 @@ class _RankingTeacherState extends State<RankingTeacher> {
 
   void getRanking() async {
     await getData();
-    await rankingService.getLeaderboard(myId, token);
+    await rankingService.getLeaderboard(teacherId, token);
     assignData();
   }
 
   Future<void> getData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     token = prefs.getString('token');
-    myId = prefs.getInt('userId');
     teacherId = prefs.getInt('teacherId');
   }
 
