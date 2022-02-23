@@ -8,9 +8,11 @@ import 'package:kusikay_mobile/widgets/kusikay_appbar.dart';
 import 'package:kusikay_mobile/widgets/report_card_students.dart';
 
 class ReviewReportsTeacherLeader extends StatefulWidget {
-  const ReviewReportsTeacherLeader({Key? key, required this.nameTeacher})
+  const ReviewReportsTeacherLeader(
+      {Key? key, required this.nameTeacher, required this.teacherId})
       : super(key: key);
   final String nameTeacher;
+  final int teacherId;
 
   @override
   _ReviewReportsTeacherLeaderState createState() =>
@@ -58,7 +60,8 @@ class _ReviewReportsTeacherLeaderState
   }
 
   void getSessionsReports() async {
-    await getAllSesionsReports.getAllSesionsReportByTeacher(widget.nameTeacher);
+    print(widget.teacherId);
+    await getAllSesionsReports.getAllSesionsReportByTeacher(widget.teacherId);
     assignData();
   }
 

@@ -19,7 +19,7 @@ class _ReviewReportsState extends State<ReviewReports> {
   List<Teacher> teachers = [];
 
   void getData() async {
-    teachers = await teacherService.getTeachersByLeaderId(1);
+    teachers = await teacherService.getTeachersByLeaderId();
     setState(() {});
   }
 
@@ -53,6 +53,7 @@ class _ReviewReportsState extends State<ReviewReports> {
                     alert: false,
                     name: teachers[index].name!,
                     phone: teachers[index].phone!,
+                    id: teachers[index].id!,
                   );
                 },
               ),
@@ -66,17 +67,17 @@ class _ReviewReportsState extends State<ReviewReports> {
 
 class RevisarInformeTile extends StatelessWidget {
   const RevisarInformeTile(
-      {Key? key, required this.alert, required this.name, required this.phone})
+      {Key? key,
+      required this.alert,
+      required this.name,
+      required this.phone,
+      required this.id})
       : super(key: key);
 
   final bool alert;
   final String name;
   final String phone;
-
-  Future<void> asign(String xd) async {
-    SharedPreferences aux = await SharedPreferences.getInstance();
-    aux.setString('teacherName', xd);
-  }
+  final int id;
 
   @override
   Widget build(BuildContext context) {
@@ -90,13 +91,11 @@ class RevisarInformeTile extends StatelessWidget {
                 color: Colors.black87, size: 25)
             : null,
         onTap: () {
-          //dirigir a vista de Calixtro
-          asign(name);
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) =>
-                      ReviewReportsTeacherLeader(nameTeacher: name)));
+                  builder: (context) => ReviewReportsTeacherLeader(
+                      nameTeacher: name, teacherId: id)));
         },
       ),
     );
