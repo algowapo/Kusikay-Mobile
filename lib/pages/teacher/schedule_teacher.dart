@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:kusikay_mobile/colors/kusikay_colors.dart';
 import 'package:kusikay_mobile/models/teacher_schedule.dart';
 import 'package:kusikay_mobile/services/teacher_service.dart';
 import 'package:kusikay_mobile/utils/util.dart';
@@ -41,61 +43,71 @@ class _ScheduleTeacherState extends State<ScheduleTeacher> {
         EdgeInsets.fromLTRB(width * 0.06, 0, width * 0.06, width * 0.03);
 
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            YearMonthViewer(
-              year: today.year.toString(),
-              month: months[today.month - 1],
-            ),
-            const VerticalSeparator(),
-            Expanded(
-              child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemCount: teacherSchedule.length,
-                itemBuilder: (context, index) {
-                  var schedule = teacherSchedule[index];
-                  DateFormat formatHourMinute = DateFormat('hh:mm');
-                  DateFormat formatDay = DateFormat('dd MMMM');
-                  var startHour = schedule.meetingId != null
-                      ? formatHourMinute.format(schedule.meetingStartTime!)
-                      : formatHourMinute.format(schedule.classStartTime!);
-                  var finishHour = schedule.meetingId != null
-                      ? formatHourMinute.format(schedule.meetingFinishTime!)
-                      : formatHourMinute.format(schedule.classFinishTime!);
+      body: teacherSchedule.isEmpty
+          ? const Center(
+              child: SpinKitFadingCircle(
+              color: KColors.yellow,
+              size: 50,
+            ))
+          : Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  YearMonthViewer(
+                    year: today.year.toString(),
+                    month: months[today.month - 1],
+                  ),
+                  const VerticalSeparator(),
+                  Expanded(
+                    child: ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: teacherSchedule.length,
+                      itemBuilder: (context, index) {
+                        var schedule = teacherSchedule[index];
+                        DateFormat formatHourMinute = DateFormat('hh:mm');
+                        DateFormat formatDay = DateFormat('dd MMMM');
+                        var startHour = schedule.meetingId != null
+                            ? formatHourMinute
+                                .format(schedule.meetingStartTime!)
+                            : formatHourMinute.format(schedule.classStartTime!);
+                        var finishHour = schedule.meetingId != null
+                            ? formatHourMinute
+                                .format(schedule.meetingFinishTime!)
+                            : formatHourMinute
+                                .format(schedule.classFinishTime!);
 
-                  if (schedule.finished == false) {
-                    return Padding(
-                      padding: EdgeInsets.all(width * 0.06),
-                      child: ScheduleCard(
-                          date: schedule.meetingId != null
-                              ? formatDay.format(schedule.meetingStartTime!)
-                              : schedule.classWeekDay!.toString(),
-                          time: '$startHour - $finishHour',
-                          title: schedule.meetingId == null
-                              ? 'Clase de ${schedule.classCourseName}'
-                              : '${schedule.meetingName}',
-                          icon: schedule.meetingId != null
-                              ? const Icon(Icons.groups_outlined)
-                              : const Icon(Icons.school_outlined),
-                          description: schedule.meetingId != null
-                              ? '${schedule.meetingDescription}'
-                              : 'Clase de la semana'),
-                    );
-                  } else {
-                    //reunion terminada
-                    return const SizedBox(
-                      height: 0,
-                      width: 0,
-                    );
-                  }
-                },
+                        if (schedule.finished == false) {
+                          return Padding(
+                            padding: EdgeInsets.all(width * 0.06),
+                            child: ScheduleCard(
+                                date: schedule.meetingId != null
+                                    ? formatDay
+                                        .format(schedule.meetingStartTime!)
+                                    : schedule.classWeekDay!.toString(),
+                                time: '$startHour - $finishHour',
+                                title: schedule.meetingId == null
+                                    ? 'Clase de ${schedule.classCourseName}'
+                                    : '${schedule.meetingName}',
+                                icon: schedule.meetingId != null
+                                    ? const Icon(Icons.groups_outlined)
+                                    : const Icon(Icons.school_outlined),
+                                description: schedule.meetingId != null
+                                    ? '${schedule.meetingDescription}'
+                                    : 'Clase de la semana'),
+                          );
+                        } else {
+                          //reunion terminada
+                          return const SizedBox(
+                            height: 0,
+                            width: 0,
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
     );
   }
 }
