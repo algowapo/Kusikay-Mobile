@@ -15,7 +15,6 @@ class TeacherService {
     List<TeacherSchedule> teacherSchedule = [];
     final prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString('token');
-    //suponiendo que useris es el mismo de teacher
     final int? teacherId = prefs.getInt('teacherId');
 
     try {
@@ -87,14 +86,16 @@ class TeacherService {
     }
   }
 
-  Future<List<Teacher>> getTeachersByLeaderId(int leaderId) async {
+  Future<List<Teacher>> getTeachersByLeaderId() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+    final int? leaderId = prefs.getInt('teacherId');
+
     List<Teacher> teachers = [];
-    const String token =
-        'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaW5vIn0.bCcj99sO-yCeKqTfxBEUMinv8ei5EEsSDZy-mG1tjHaE6Z4Pn9YB7bJCrUOaqp-1pV1vXIBiPcNTY7KFWh12Zw';
 
     try {
       Response response = await get(Uri.parse(BASE_URL + '/leaders/$leaderId'),
-          headers: {HttpHeaders.authorizationHeader: token});
+          headers: {HttpHeaders.authorizationHeader: token!});
 
       Map<String, dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
       List<dynamic> content = data["content"];
