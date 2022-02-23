@@ -25,12 +25,14 @@ class _CreateMeetingDialogState extends State<CreateMeetingDialog> {
     if (response) {
       const snackBar = SnackBar(
         content: Text('Reunion creada correctamente'),
+        behavior: SnackBarBehavior.floating,
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       Navigator.of(context).pop();
     } else {
       const snackBar = SnackBar(
         content: Text('Error'),
+        behavior: SnackBarBehavior.floating,
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }

@@ -48,12 +48,14 @@ class _AttendanceDialogState extends State<AttendanceDialog> {
     if (response) {
       const snackBar = SnackBar(
         content: Text('Asistencia guardada correctamente'),
+        behavior: SnackBarBehavior.floating,
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       Navigator.of(context).pop();
     } else {
       const snackBar = SnackBar(
         content: Text('Error'),
+        behavior: SnackBarBehavior.floating,
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
