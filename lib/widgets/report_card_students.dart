@@ -9,6 +9,9 @@ class ReportCardStudents extends StatelessWidget {
   final String student1;
   final String student2;
   final String student3;
+  final bool assistanceStudent1;
+  final bool assistanceStudent2;
+  final bool assistanceStudent3;
   const ReportCardStudents(
       {Key? key,
       required this.status,
@@ -16,7 +19,10 @@ class ReportCardStudents extends StatelessWidget {
       required this.time,
       required this.student1,
       required this.student2,
-      required this.student3})
+      required this.student3,
+      required this.assistanceStudent1,
+      required this.assistanceStudent2,
+      required this.assistanceStudent3})
       : super(key: key);
 
   Color colorStatus(String status) {
@@ -84,9 +90,30 @@ class ReportCardStudents extends StatelessWidget {
                 .headline2!
                 .copyWith(decoration: TextDecoration.underline),
           ),
-          //Text(student1),
-          //Text(student2),
-          //Text(student3)
+          const SizedBox(height: 6),
+          Text(
+            '- ' + student1.split(" ")[0] + ' ' + student1.split(" ")[1],
+            style: TextStyle(
+              fontSize: 11,
+              color: assistanceStudent1 == false ? KColors.red : Colors.black,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            '- ' + student2.split(" ")[0] + ' ' + student2.split(" ")[1],
+            style: TextStyle(
+                fontSize: 11,
+                color:
+                    assistanceStudent2 == false ? KColors.red : Colors.black),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            '- ' + student3.split(" ")[0] + ' ' + student3.split(" ")[1],
+            style: TextStyle(
+                fontSize: 10,
+                color:
+                    assistanceStudent3 == false ? KColors.red : Colors.black),
+          )
         ],
       ),
     );

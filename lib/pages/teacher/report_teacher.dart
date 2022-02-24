@@ -75,7 +75,7 @@ class _ReportTeacherState extends State<ReportTeacher> {
                       builder: (BuildContext context) {
                         print(sessionReports[i]);
                         return sessionReports[i].status == 'completo'
-                            ? SessionReportDialog(sessionReports[i])
+                            ? SessionReportDialog(sessionReports[i], false)
                             : CreateSessionReportDialog(sessionReports[i]);
                       },
                       animationType: DialogTransitionType.slideFromBottom,

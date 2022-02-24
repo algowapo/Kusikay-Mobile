@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:kusikay_mobile/colors/kusikay_colors.dart';
 import 'package:kusikay_mobile/models/token_user_data.dart';
 import 'dart:ui' as ui;
@@ -23,6 +24,7 @@ class _LoginState extends State<Login> {
   String roleData = '';
   bool enabledData = false;
   bool _isHidden = true;
+  bool loadingLoggin = false;
 
   void _togglePasswordView() {
     setState(() {
@@ -56,6 +58,7 @@ class _LoginState extends State<Login> {
       }
       //print("Inicio Sesión Exitoso");
     } else {
+      loadingLoggin = false;
       const snackBar = SnackBar(
         content: Text('Credenciales incorrectas'),
         behavior: SnackBarBehavior.floating,
@@ -140,27 +143,58 @@ class _LoginState extends State<Login> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 13),
-                child: Center(
-                  child: Container(
-                    height: 44.0,
-                    width: width * 0.55,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        gradient: LinearGradient(
-                            colors: [KColors.red, KColors.orange])),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          _login();
-                        },
-                        style: ElevatedButton.styleFrom(
-                            primary: Colors.transparent,
-                            shadowColor: Colors.transparent),
-                        child: Text("Iniciar Sesión")),
-                  ),
-                ),
-              ),
+              loadingLoggin
+                  ? Padding(
+                      padding: const EdgeInsets.only(top: 13),
+                      child: Center(
+                        child: Container(
+                          height: 44.0,
+                          width: width * 0.16,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(100),
+                              gradient: LinearGradient(
+                                  colors: [KColors.red, KColors.orange])),
+                          child: ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  loadingLoggin = true;
+                                });
+                                _login();
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  primary: Colors.transparent,
+                                  shadowColor: Colors.transparent),
+                              child: SpinKitFadingCircle(
+                                color: Colors.white,
+                                size: 30,
+                              )),
+                        ),
+                      ),
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.only(top: 13),
+                      child: Center(
+                        child: Container(
+                          height: 44.0,
+                          width: width * 0.55,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50),
+                              gradient: LinearGradient(
+                                  colors: [KColors.red, KColors.orange])),
+                          child: ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  loadingLoggin = true;
+                                });
+                                _login();
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  primary: Colors.transparent,
+                                  shadowColor: Colors.transparent),
+                              child: Text("Iniciar Sesión")),
+                        ),
+                      ),
+                    ),
               CustomPaint(
                 size: Size(
                     width,

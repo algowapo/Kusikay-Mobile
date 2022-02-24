@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:kusikay_mobile/colors/kusikay_colors.dart';
 import 'package:kusikay_mobile/models/sesion_report_optional.dart';
+import 'package:kusikay_mobile/models/session_report.dart';
 import 'package:kusikay_mobile/models/student_assistence.dart';
 import 'package:kusikay_mobile/services/get_sessions_report_service.dart';
+import 'package:kusikay_mobile/widgets/create_session_report_dialog.dart';
 import 'package:kusikay_mobile/widgets/kusikay_appbar.dart';
 import 'package:kusikay_mobile/widgets/report_card_students.dart';
+import 'package:kusikay_mobile/widgets/session_report_dialog.dart';
 
 class ReviewReportsTeacherLeader extends StatefulWidget {
   const ReviewReportsTeacherLeader(
@@ -120,7 +124,7 @@ class _ReviewReportsTeacherLeaderState
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "El alumno Gion Pequis tiene 3 ausencias",
+                              "El alumno Gino Quispe tiene 3 ausencias",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 12.5,
@@ -137,14 +141,14 @@ class _ReviewReportsTeacherLeaderState
                 ),
               ),
               Container(
-                  height: height * 0.59,
+                  height: height * 0.65,
                   width: width,
                   child: GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         mainAxisSpacing: width * 0.05,
                         crossAxisSpacing: width * 0.06,
-                        childAspectRatio: 1.25),
+                        childAspectRatio: 0.8),
                     physics: BouncingScrollPhysics(),
                     padding: EdgeInsets.all(width * 0.06),
                     itemCount: sessionsReports.length,
@@ -161,14 +165,59 @@ class _ReviewReportsTeacherLeaderState
                       var hourFinishClassString =
                           formatHour.format(hourFinishClass);
                       String horita =
-                          hourStartClass + ' - ' + hourFinishClassString;
-                      return ReportCardStudents(
-                        status: sessionsReport.state.toString(),
-                        date: dateSesionReport,
-                        time: horita,
-                        student1: sessionsReport.student1.toString(),
-                        student2: sessionsReport.student2.toString(),
-                        student3: sessionsReport.student3.toString(),
+                          hourStartClass + '-' + hourFinishClassString;
+                      return InkWell(
+                        child: ReportCardStudents(
+                          status: sessionsReport.state.toString(),
+                          date: dateSesionReport,
+                          time: horita,
+                          student1: sessionsReport.student1.toString(),
+                          student2: sessionsReport.student2.toString(),
+                          student3: sessionsReport.student3.toString(),
+                          assistanceStudent1:
+                              sessionsReport.assistanceStudent1!,
+                          assistanceStudent2:
+                              sessionsReport.assistanceStudent2!,
+                          assistanceStudent3:
+                              sessionsReport.assistanceStudent3!,
+                        ),
+                        onTap: () async {
+                          print(sessionsReport.id);
+                          await showAnimatedDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                print(sessionsReport.id);
+                                if (sessionsReport.state == "completo") {
+                                  return SessionReportDialog(
+                                      new SessionReport(
+                                          sessionsReport.id,
+                                          sessionsReport.classDate.toString(),
+                                          sessionsReport.comments,
+                                          sessionsReport.createdAt,
+                                          sessionsReport.description,
+                                          sessionsReport.duration,
+                                          sessionsReport.hadClass,
+                                          sessionsReport.student1,
+                                          sessionsReport.student2,
+                                          sessionsReport.student3,
+                                          sessionsReport.assistanceStudent1!,
+                                          sessionsReport.assistanceStudent2!,
+                                          sessionsReport.assistanceStudent3!,
+                                          sessionsReport.whyNotClass,
+                                          widget.teacherId,
+                                          sessionsReport.state),
+                                      true);
+                                } else {
+                                  return Container();
+                                }
+                              },
+                              animationType:
+                                  DialogTransitionType.slideFromBottom,
+                              curve: Curves.fastOutSlowIn,
+                              duration: const Duration(milliseconds: 500),
+                              barrierDismissible: true);
+                          print(widget.teacherId);
+                        },
                       );
                     },
                   ))

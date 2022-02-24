@@ -9,8 +9,9 @@ import 'package:kusikay_mobile/widgets/check_button.dart';
 import 'package:kusikay_mobile/widgets/description_input.dart';
 
 class SessionReportDialog extends StatefulWidget {
+  final bool isLeader;
   final SessionReport report;
-  const SessionReportDialog(this.report);
+  const SessionReportDialog(this.report, this.isLeader);
 
   @override
   State<SessionReportDialog> createState() => _SessionReportDialogState();
@@ -328,115 +329,126 @@ class _SessionReportDialogState extends State<SessionReportDialog> {
               ],
             ),
           )),
-          Container(
-            decoration: BoxDecoration(
-              border: Border(
-                top: BorderSide(width: 2.0, color: Colors.grey.shade400),
-              ),
-              color: Colors.white,
-            ),
-            height: 60,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                fieldsEnabled
-                    ? InkWell(
-                        onTap: () {
-                          toggleEditing();
-                          print("Se descarto");
-                        },
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.delete_outline,
-                              size: 20,
+          widget.isLeader
+              ? Container()
+              : Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: BorderSide(width: 2.0, color: Colors.grey.shade400),
+                    ),
+                    color: Colors.white,
+                  ),
+                  height: 60,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      fieldsEnabled
+                          ? InkWell(
+                              onTap: () {
+                                toggleEditing();
+                                print("Se descarto");
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.delete_outline,
+                                    size: 20,
+                                  ),
+                                  SizedBox(
+                                    width: 3,
+                                  ),
+                                  Text('Descartar',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .subtitle1),
+                                ],
+                              ),
+                            )
+                          : InkWell(
+                              onTap: () {
+                                if (fieldsEnabled) {
+                                  toggleEditing();
+                                  print("no se puede editar");
+                                } else {
+                                  if (widget.report.hadClass == false) {
+                                    () => {};
+                                    const snackBar = SnackBar(
+                                      content: Text(
+                                          'Este informe no se puede editar'),
+                                      behavior: SnackBarBehavior.floating,
+                                    );
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(snackBar);
+                                    Navigator.of(context).pop();
+                                  } else {
+                                    toggleEditing();
+                                    print('se puede editar');
+                                  }
+                                }
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.edit,
+                                    size: 20,
+                                  ),
+                                  SizedBox(
+                                    width: 3,
+                                  ),
+                                  Text('Editar',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .subtitle1),
+                                ],
+                              ),
                             ),
-                            SizedBox(
-                              width: 3,
-                            ),
-                            Text('Descartar',
-                                style: Theme.of(context).textTheme.subtitle1),
-                          ],
-                        ),
-                      )
-                    : InkWell(
-                        onTap: () {
-                          if (fieldsEnabled) {
-                            toggleEditing();
-                            print("no se puede editar");
-                          } else {
-                            if (widget.report.hadClass == false) {
-                              () => {};
-                              const snackBar = SnackBar(
-                                content:
-                                    Text('Este informe no se puede editar'),
-                                behavior: SnackBarBehavior.floating,
-                              );
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackBar);
-                              Navigator.of(context).pop();
-                            } else {
-                              toggleEditing();
-                              print('se puede editar');
-                            }
-                          }
-                        },
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.edit,
-                              size: 20,
-                            ),
-                            SizedBox(
-                              width: 3,
-                            ),
-                            Text('Editar',
-                                style: Theme.of(context).textTheme.subtitle1),
-                          ],
-                        ),
-                      ),
-                Container(
-                    height: 50, child: VerticalDivider(color: Colors.black38)),
-                fieldsEnabled
-                    ? InkWell(
-                        onTap: () {
-                          updateSessionReport();
-                        },
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.save_sharp,
-                              size: 20,
-                            ),
-                            SizedBox(
-                              width: 3,
-                            ),
-                            Text('Guardar',
-                                style: Theme.of(context).textTheme.subtitle1),
-                          ],
-                        ),
-                      )
-                    : InkWell(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.check_circle_outline,
-                              size: 20,
-                            ),
-                            SizedBox(
-                              width: 3,
-                            ),
-                            Text('Salir',
-                                style: Theme.of(context).textTheme.subtitle1),
-                          ],
-                        ),
-                      )
-              ],
-            ),
-          )
+                      Container(
+                          height: 50,
+                          child: VerticalDivider(color: Colors.black38)),
+                      fieldsEnabled
+                          ? InkWell(
+                              onTap: () {
+                                updateSessionReport();
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.save_sharp,
+                                    size: 20,
+                                  ),
+                                  SizedBox(
+                                    width: 3,
+                                  ),
+                                  Text('Guardar',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .subtitle1),
+                                ],
+                              ),
+                            )
+                          : InkWell(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.check_circle_outline,
+                                    size: 20,
+                                  ),
+                                  SizedBox(
+                                    width: 3,
+                                  ),
+                                  Text('Salir',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .subtitle1),
+                                ],
+                              ),
+                            )
+                    ],
+                  ),
+                )
         ],
       ),
     );
