@@ -182,14 +182,13 @@ class _ReviewReportsTeacherLeaderState
                               sessionsReport.assistanceStudent3!,
                         ),
                         onTap: () async {
-                          print(sessionsReport.id);
                           await showAnimatedDialog(
                               context: context,
                               builder: (BuildContext context) {
                                 print(sessionsReport.id);
                                 if (sessionsReport.state == "completo") {
                                   return SessionReportDialog(
-                                      new SessionReport(
+                                      SessionReport(
                                           sessionsReport.id,
                                           sessionsReport.classDate.toString(),
                                           sessionsReport.comments,

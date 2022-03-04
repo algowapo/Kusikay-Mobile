@@ -91,29 +91,39 @@ class ReportCardStudents extends StatelessWidget {
                 .copyWith(decoration: TextDecoration.underline),
           ),
           const SizedBox(height: 6),
-          Text(
-            '- ' + student1.split(" ")[0] + ' ' + student1.split(" ")[1],
-            style: TextStyle(
-              fontSize: 11,
-              color: assistanceStudent1 == false ? KColors.red : Colors.black,
-            ),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            '- ' + student2.split(" ")[0] + ' ' + student2.split(" ")[1],
-            style: TextStyle(
-                fontSize: 11,
-                color:
-                    assistanceStudent2 == false ? KColors.red : Colors.black),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            '- ' + student3.split(" ")[0] + ' ' + student3.split(" ")[1],
-            style: TextStyle(
-                fontSize: 10,
-                color:
-                    assistanceStudent3 == false ? KColors.red : Colors.black),
-          )
+          status == 'completo'
+              ? Text(
+                  '- ' + student1,
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: assistanceStudent1 == false
+                        ? KColors.red
+                        : Colors.black,
+                  ),
+                )
+              : Container(),
+          status == 'completo' ? const SizedBox(height: 6) : Container(),
+          status == 'completo'
+              ? Text(
+                  '- ' + student2,
+                  style: TextStyle(
+                      fontSize: 11,
+                      color: assistanceStudent2 == false
+                          ? KColors.red
+                          : Colors.black),
+                )
+              : Container(),
+          status == 'completo' ? const SizedBox(height: 6) : Container(),
+          status == 'completo'
+              ? Text(
+                  '- ' + student3,
+                  style: TextStyle(
+                      fontSize: 10,
+                      color: assistanceStudent3 == false
+                          ? KColors.red
+                          : Colors.black),
+                )
+              : Container(),
         ],
       ),
     );
