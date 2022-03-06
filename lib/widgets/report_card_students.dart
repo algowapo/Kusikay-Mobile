@@ -92,7 +92,7 @@ class ReportCardStudents extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            '- ' + student1.split(" ")[0] + ' ' + student1.split(" ")[1],
+            "Estudiante " + student1,
             style: TextStyle(
               fontSize: 11,
               color: assistanceStudent1 == false ? KColors.red : Colors.black,
@@ -100,7 +100,7 @@ class ReportCardStudents extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            '- ' + student2.split(" ")[0] + ' ' + student2.split(" ")[1],
+            "Estudiante " + student2,
             style: TextStyle(
                 fontSize: 11,
                 color:
@@ -108,9 +108,9 @@ class ReportCardStudents extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            '- ' + student3.split(" ")[0] + ' ' + student3.split(" ")[1],
+            "Estudiante " + student3,
             style: TextStyle(
-                fontSize: 10,
+                fontSize: 11,
                 color:
                     assistanceStudent3 == false ? KColors.red : Colors.black),
           )

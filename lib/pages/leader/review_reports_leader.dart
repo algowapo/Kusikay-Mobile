@@ -109,7 +109,7 @@ class _ReviewReportsTeacherLeaderState
                   style: Theme.of(context).textTheme.caption,
                 ),
               ),
-              Padding(
+              /*Padding(
                 padding: const EdgeInsets.only(top: 15.0, bottom: 5.0),
                 child: Center(
                   child: Container(
@@ -139,9 +139,9 @@ class _ReviewReportsTeacherLeaderState
                     ),
                   ),
                 ),
-              ),
+              ),*/
               Container(
-                  height: height * 0.65,
+                  height: height * 0.74,
                   width: width,
                   child: GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -167,58 +167,60 @@ class _ReviewReportsTeacherLeaderState
                       String horita =
                           hourStartClass + '-' + hourFinishClassString;
                       return InkWell(
-                        child: ReportCardStudents(
-                          status: sessionsReport.state.toString(),
-                          date: dateSesionReport,
-                          time: horita,
-                          student1: sessionsReport.student1.toString(),
-                          student2: sessionsReport.student2.toString(),
-                          student3: sessionsReport.student3.toString(),
-                          assistanceStudent1:
-                              sessionsReport.assistanceStudent1!,
-                          assistanceStudent2:
-                              sessionsReport.assistanceStudent2!,
-                          assistanceStudent3:
-                              sessionsReport.assistanceStudent3!,
-                        ),
-                        onTap: () async {
-                          print(sessionsReport.id);
-                          await showAnimatedDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                print(sessionsReport.id);
-                                if (sessionsReport.state == "completo") {
-                                  return SessionReportDialog(
-                                      new SessionReport(
-                                          sessionsReport.id,
-                                          sessionsReport.classDate.toString(),
-                                          sessionsReport.comments,
-                                          sessionsReport.createdAt,
-                                          sessionsReport.description,
-                                          sessionsReport.duration,
-                                          sessionsReport.hadClass,
-                                          sessionsReport.student1,
-                                          sessionsReport.student2,
-                                          sessionsReport.student3,
-                                          sessionsReport.assistanceStudent1!,
-                                          sessionsReport.assistanceStudent2!,
-                                          sessionsReport.assistanceStudent3!,
-                                          sessionsReport.whyNotClass,
-                                          widget.teacherId,
-                                          sessionsReport.state),
-                                      true);
-                                } else {
-                                  return Container();
+                          child: ReportCardStudents(
+                            status: sessionsReport.state.toString(),
+                            date: dateSesionReport,
+                            time: horita,
+                            student1: sessionsReport.student1.toString(),
+                            student2: sessionsReport.student2.toString(),
+                            student3: sessionsReport.student3.toString(),
+                            assistanceStudent1:
+                                sessionsReport.assistanceStudent1!,
+                            assistanceStudent2:
+                                sessionsReport.assistanceStudent2!,
+                            assistanceStudent3:
+                                sessionsReport.assistanceStudent3!,
+                          ),
+                          onTap: sessionsReport.state == "completo"
+                              ? () async {
+                                  print(sessionsReport.id);
+                                  await showAnimatedDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        print(sessionsReport.id);
+                                        return SessionReportDialog(
+                                            new SessionReport(
+                                                sessionsReport.id,
+                                                sessionsReport.classDate
+                                                    .toString(),
+                                                sessionsReport.comments,
+                                                sessionsReport.createdAt,
+                                                sessionsReport.description,
+                                                sessionsReport.duration,
+                                                sessionsReport.hadClass,
+                                                sessionsReport.student1,
+                                                sessionsReport.student2,
+                                                sessionsReport.student3,
+                                                sessionsReport
+                                                    .assistanceStudent1!,
+                                                sessionsReport
+                                                    .assistanceStudent2!,
+                                                sessionsReport
+                                                    .assistanceStudent3!,
+                                                sessionsReport.whyNotClass,
+                                                widget.teacherId,
+                                                sessionsReport.state),
+                                            true);
+                                      },
+                                      animationType:
+                                          DialogTransitionType.slideFromBottom,
+                                      curve: Curves.fastOutSlowIn,
+                                      duration:
+                                          const Duration(milliseconds: 500),
+                                      barrierDismissible: true);
+                                  print(widget.teacherId);
                                 }
-                              },
-                              animationType:
-                                  DialogTransitionType.slideFromBottom,
-                              curve: Curves.fastOutSlowIn,
-                              duration: const Duration(milliseconds: 500),
-                              barrierDismissible: true);
-                          print(widget.teacherId);
-                        },
-                      );
+                              : () {});
                     },
                   ))
             ])));
