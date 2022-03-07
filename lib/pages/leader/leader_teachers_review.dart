@@ -42,8 +42,7 @@ class _ReviewReportsState extends State<ReviewReports> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //TODO: TRAER NOMBRE DEL CURSO AL LOGIN
-            Text('Danza Folclorica',
-                style: Theme.of(context).textTheme.headline1),
+            Text('Artistas:', style: Theme.of(context).textTheme.headline1),
             Expanded(
               child: ListView.builder(
                 itemCount: teachers.length,
