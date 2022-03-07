@@ -91,39 +91,29 @@ class ReportCardStudents extends StatelessWidget {
                 .copyWith(decoration: TextDecoration.underline),
           ),
           const SizedBox(height: 6),
-          status == 'completo'
-              ? Text(
-                  '- ' + student1,
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: assistanceStudent1 == false
-                        ? KColors.red
-                        : Colors.black,
-                  ),
-                )
-              : Container(),
-          status == 'completo' ? const SizedBox(height: 6) : Container(),
-          status == 'completo'
-              ? Text(
-                  '- ' + student2,
-                  style: TextStyle(
-                      fontSize: 11,
-                      color: assistanceStudent2 == false
-                          ? KColors.red
-                          : Colors.black),
-                )
-              : Container(),
-          status == 'completo' ? const SizedBox(height: 6) : Container(),
-          status == 'completo'
-              ? Text(
-                  '- ' + student3,
-                  style: TextStyle(
-                      fontSize: 10,
-                      color: assistanceStudent3 == false
-                          ? KColors.red
-                          : Colors.black),
-                )
-              : Container(),
+          Text(
+            "Estudiante " + student1,
+            style: TextStyle(
+              fontSize: 11,
+              color: assistanceStudent1 == false ? KColors.red : Colors.black,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            "Estudiante " + student2,
+            style: TextStyle(
+                fontSize: 11,
+                color:
+                    assistanceStudent2 == false ? KColors.red : Colors.black),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            "Estudiante " + student3,
+            style: TextStyle(
+                fontSize: 11,
+                color:
+                    assistanceStudent3 == false ? KColors.red : Colors.black),
+          )
         ],
       ),
     );

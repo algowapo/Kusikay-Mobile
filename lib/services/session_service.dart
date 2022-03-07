@@ -102,7 +102,7 @@ class SessionService {
       'state': sessionReport.status
     };
     try {
-      Response response = await put(
+      Response response = await post(
         Uri.parse(
             '$BACKEND_URL/api/sessionReports/' + sessionReport.id.toString()),
         headers: <String, String>{
